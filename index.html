@@ -31,8 +31,99 @@
     body { font-family:var(--font); background:var(--bg); color:var(--text-primary); min-height:100vh; }
 
     /* ══════════════════════════════
-       顶部导航
+       登录 / 注册 页面
     ══════════════════════════════ */
+    #authPage {
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(135deg,#EEF2FF 0%,#F0FDF8 100%);
+      padding:20px;
+    }
+    .auth-card {
+      background:#fff; border-radius:20px; width:100%; max-width:400px;
+      box-shadow:0 8px 40px rgba(74,124,255,0.12);
+      overflow:hidden;
+    }
+    .auth-top {
+      background:linear-gradient(135deg,var(--primary),#6B9FFF);
+      padding:32px 28px 28px; text-align:center;
+    }
+    .auth-logo {
+      width:52px; height:52px; background:rgba(255,255,255,0.2);
+      border-radius:14px; display:flex; align-items:center; justify-content:center;
+      margin:0 auto 14px;
+    }
+    .auth-logo svg { width:26px; height:26px; color:#fff; }
+    .auth-app-name { font-size:20px; font-weight:700; color:#fff; }
+    .auth-app-sub { font-size:13px; color:rgba(255,255,255,0.75); margin-top:4px; }
+
+    .auth-tabs {
+      display:flex; border-bottom:1px solid var(--border);
+    }
+    .auth-tab {
+      flex:1; padding:14px 0; border:none; background:transparent;
+      font-size:14px; font-weight:500; cursor:pointer; font-family:var(--font);
+      color:var(--text-light); border-bottom:2px solid transparent;
+      transition:all 0.2s; margin-bottom:-1px;
+    }
+    .auth-tab.active { color:var(--primary); border-bottom-color:var(--primary); }
+
+    .auth-body { padding:24px 28px 28px; display:flex; flex-direction:column; gap:14px; }
+
+    .auth-form { display:flex; flex-direction:column; gap:14px; }
+    .auth-form.hidden { display:none; }
+
+    .auth-field { display:flex; flex-direction:column; gap:6px; }
+    .auth-label { font-size:12px; color:var(--text-secondary); font-weight:500; }
+    .auth-input {
+      padding:11px 14px; border:1.5px solid var(--border); border-radius:9px;
+      font-size:14px; font-family:var(--font); color:var(--text-primary);
+      outline:none; transition:border-color 0.2s; width:100%; background:#fff;
+    }
+    .auth-input:focus { border-color:var(--primary); }
+    .auth-input.error { border-color:#F55353; }
+
+    .auth-nickname { display:none; }
+    .auth-nickname.show { display:flex; }
+
+    .auth-btn {
+      padding:12px; background:var(--primary); color:#fff; border:none;
+      border-radius:9px; font-size:14px; font-weight:600; cursor:pointer;
+      font-family:var(--font); transition:all 0.2s; margin-top:2px;
+    }
+    .auth-btn:hover { background:#3A6CE8; }
+    .auth-btn:disabled { background:var(--text-light); cursor:not-allowed; }
+    .auth-btn:active { transform:scale(0.98); }
+
+    .auth-err {
+      font-size:12px; color:#F55353; text-align:center;
+      background:rgba(245,83,83,0.07); padding:8px 12px; border-radius:7px;
+      display:none;
+    }
+    .auth-err.show { display:block; }
+
+    .auth-hint { font-size:12px; color:var(--text-light); text-align:center; line-height:1.5; }
+
+    /* 邮件确认提示 */
+    .auth-success {
+      display:none; flex-direction:column; align-items:center; gap:12px;
+      padding:8px 0;
+    }
+    .auth-success.show { display:flex; }
+    .auth-success-icon {
+      width:56px; height:56px; background:var(--life-light); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .auth-success-icon svg { width:28px; height:28px; color:var(--life); }
+    .auth-success-title { font-size:15px; font-weight:600; }
+    .auth-success-desc { font-size:13px; color:var(--text-secondary); text-align:center; line-height:1.6; }
+
+    /* ══════════════════════════════
+       主应用（登录后显示）
+    ══════════════════════════════ */
+    #appPage { display:none; }
+    #appPage.show { display:block; }
+
+    /* 顶部导航 */
     .header {
       background:var(--card-bg); border-bottom:1px solid var(--border);
       padding:0 20px; height:var(--header-h);
@@ -60,11 +151,35 @@
     .sync-dot.error { background:#F55353; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-    /* ══════════════════════════════
-       PC布局：左侧+右侧
-    ══════════════════════════════ */
+    /* 用户头像 + 下拉 */
+    .user-menu { position:relative; }
+    .user-avatar {
+      width:30px; height:30px; border-radius:50%;
+      background:linear-gradient(135deg,var(--primary),var(--life));
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-size:12px; font-weight:700; cursor:pointer;
+      border:none; font-family:var(--font); flex-shrink:0;
+    }
+    .user-dropdown {
+      display:none; position:absolute; top:38px; right:0;
+      background:#fff; border:1px solid var(--border); border-radius:10px;
+      box-shadow:0 8px 24px rgba(0,0,0,0.1); min-width:180px; overflow:hidden; z-index:200;
+    }
+    .user-dropdown.show { display:block; }
+    .user-dropdown-info { padding:12px 14px; border-bottom:1px solid var(--border); }
+    .user-dropdown-name { font-size:13px; font-weight:600; }
+    .user-dropdown-email { font-size:11px; color:var(--text-light); margin-top:2px; word-break:break-all; }
+    .user-dropdown-item {
+      padding:10px 14px; font-size:13px; color:var(--text-secondary);
+      cursor:pointer; transition:background 0.15s; display:flex; align-items:center; gap:8px;
+    }
+    .user-dropdown-item:hover { background:var(--bg); }
+    .user-dropdown-item.danger { color:#F55353; }
+
+    /* 主体布局 */
     .main { display:flex; height:calc(100vh - var(--header-h)); }
 
+    /* 左侧月历 */
     .sidebar {
       width:256px; min-width:256px; background:var(--card-bg);
       border-right:1px solid var(--border); padding:18px 14px;
@@ -84,7 +199,7 @@
     .day-cell {
       height:32px; display:flex; align-items:center; justify-content:center; flex-direction:column;
       font-size:12px; color:var(--text-secondary); border-radius:6px; cursor:pointer;
-      position:relative; transition:all 0.15s; gap:1px;
+      transition:all 0.15s; gap:1px;
     }
     .day-cell:hover { background:var(--bg); color:var(--text-primary); }
     .day-cell.other-month { color:var(--text-light); }
@@ -108,11 +223,8 @@
     .stat-num { font-size:18px; font-weight:700; line-height:1; }
     .stat-label { font-size:10px; color:var(--text-light); margin-top:2px; }
 
-    /* ══════════════════════════════
-       右侧内容区
-    ══════════════════════════════ */
+    /* 右侧内容区 */
     .content { flex:1; overflow-y:auto; padding:20px 24px; min-width:0; }
-
     .date-strip { display:flex; align-items:center; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
     .date-strip-label { font-size:18px; font-weight:700; }
     .date-strip-sub { font-size:12px; color:var(--text-secondary); margin-right:8px; }
@@ -221,9 +333,7 @@
     .tl-card-title { font-weight:500; color:var(--text-primary); }
     .tl-card-time { font-size:11px; color:var(--text-light); }
 
-    /* ══════════════════════════════
-       Modal 弹层
-    ══════════════════════════════ */
+    /* 事项 Modal */
     .modal-mask {
       display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4);
       z-index:200; align-items:center; justify-content:center;
@@ -277,20 +387,15 @@
     .toast {
       position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(10px);
       background:#1A1D2E; color:#fff; padding:9px 18px; border-radius:8px;
-      font-size:13px; z-index:999; opacity:0; transition:all 0.3s; pointer-events:none;
-      white-space:nowrap;
+      font-size:13px; z-index:999; opacity:0; transition:all 0.3s; pointer-events:none; white-space:nowrap;
     }
     .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
-    /* ══════════════════════════════
-       手机端底部导航 Tab Bar
-    ══════════════════════════════ */
+    /* 底部导航（手机） */
     .bottom-nav {
-      display:none;
-      position:fixed; bottom:0; left:0; right:0; height:var(--bottom-nav-h);
+      display:none; position:fixed; bottom:0; left:0; right:0; height:var(--bottom-nav-h);
       background:var(--card-bg); border-top:1px solid var(--border);
-      z-index:100; padding:0 8px;
-      padding-bottom:env(safe-area-inset-bottom);
+      z-index:100; padding:0 8px; padding-bottom:env(safe-area-inset-bottom);
     }
     .bottom-nav-inner { display:flex; height:100%; align-items:center; justify-content:space-around; }
     .bnav-item {
@@ -308,12 +413,9 @@
     }
     .bnav-fab:active { transform:scale(0.93); }
 
-    /* ══════════════════════════════
-       手机端月历抽屉（侧滑）
-    ══════════════════════════════ */
+    /* 抽屉（手机月历） */
     .drawer-mask {
-      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35);
-      z-index:150; backdrop-filter:blur(1px);
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:150;
     }
     .drawer-mask.show { display:block; }
     .drawer {
@@ -324,9 +426,7 @@
     }
     .drawer.open { left:0; }
 
-    /* ══════════════════════════════
-       手机端分类 Tab（替换三栏）
-    ══════════════════════════════ */
+    /* 分类 Tab（手机） */
     .cat-tabs { display:none; gap:0; margin-bottom:14px; background:var(--card-bg); border-radius:10px; padding:4px; border:1px solid var(--border); }
     .cat-tab {
       flex:1; padding:8px 0; border:none; background:transparent; border-radius:7px;
@@ -336,65 +436,43 @@
     .cat-tab.active { background:var(--primary); color:#fff; }
 
     /* ══════════════════════════════
-       响应式断点
+       响应式
     ══════════════════════════════ */
-
-    /* 平板：隐藏侧边栏，内容更宽 */
     @media (max-width: 900px) {
       .sidebar { display:none; }
-      .content { padding:16px 16px; }
+      .content { padding:16px; }
       .columns { grid-template-columns:1fr 1fr 1fr; gap:10px; }
       .col-title { font-size:12px; }
     }
-
-    /* 手机：底部导航，单列布局 */
     @media (max-width: 640px) {
       :root { --header-h: 52px; }
       .header { padding:0 14px; }
       .header-title { font-size:15px; }
-      .btn-add span { display:none; }       /* 只显示图标 */
+      .btn-add span { display:none; }
       .btn-add { padding:7px 10px; }
-      .sync-status span { display:none; }   /* 只显示小点 */
-
+      .sync-status span { display:none; }
       .main { height:calc(100vh - var(--header-h) - var(--bottom-nav-h)); }
-      .content { padding:12px 12px; padding-bottom:16px; overflow-y:auto; }
-
-      /* 周标签滚动 */
+      .content { padding:12px; padding-bottom:16px; overflow-y:auto; }
       .date-strip { flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; }
       .date-strip::-webkit-scrollbar { display:none; }
       .week-tabs { flex-wrap:nowrap; }
       .week-tab { min-width:38px; padding:5px 6px; }
-
-      /* 三栏变单列 + 分类 Tab 切换 */
       .columns { grid-template-columns:1fr; }
       .column { display:none; }
       .column.active-col { display:block; }
       .cat-tabs { display:flex; }
-
-      /* 底部导航显示 */
       .bottom-nav { display:block; }
-
-      /* 顶部"新增"按钮隐藏（用FAB代替） */
-      .btn-add-text { display:none; }
-
-      /* 时间轴 */
       .tl-card { flex-wrap:wrap; }
-
-      /* Modal全屏感 */
       .modal { border-radius:16px 16px 0 0; position:fixed; bottom:0; left:0; right:0; max-width:100%; margin:0; }
       .modal-mask { align-items:flex-end; padding:0; }
       @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
       .modal-body { max-height:55vh; }
-
       .toast { bottom:calc(var(--bottom-nav-h) + 12px); }
     }
-
-    /* 超小屏 */
     @media (max-width: 360px) {
-      .week-tab { min-width:34px; padding:4px 4px; }
+      .week-tab { min-width:34px; padding:4px; }
       .week-tab .dd { font-size:13px; }
     }
-
     ::-webkit-scrollbar { width:4px; height:4px; }
     ::-webkit-scrollbar-track { background:transparent; }
     ::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
@@ -436,302 +514,298 @@
       <line x1="12" y1="2" x2="12" y2="22"/><circle cx="12" cy="6" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="18" r="2" fill="currentColor"/>
       <line x1="12" y1="6" x2="18" y2="6"/><line x1="12" y1="12" x2="18" y2="12"/><line x1="12" y1="18" x2="18" y2="18"/>
     </symbol>
-    <symbol id="ic-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <circle cx="12" cy="6" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="18" r="1" fill="currentColor"/>
+    <symbol id="ic-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+    </symbol>
+    <symbol id="ic-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+    </symbol>
+    <symbol id="ic-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
     </symbol>
   </defs>
 </svg>
 
-<!-- 顶部导航 -->
-<header class="header">
-  <div class="header-left">
-    <div class="logo-icon">
-      <svg style="width:16px;height:16px;color:#fff"><use href="#ic-cal"/></svg>
+<!-- ══════════════════════════════
+     登录 / 注册 页面
+══════════════════════════════ -->
+<div id="authPage">
+  <div class="auth-card">
+    <div class="auth-top">
+      <div class="auth-logo">
+        <svg><use href="#ic-cal"/></svg>
+      </div>
+      <div class="auth-app-name">我的行事历</div>
+      <div class="auth-app-sub">工作 · 生活 · 特殊事项，一处管理</div>
     </div>
-    <span class="header-title">我的行事历</span>
-  </div>
-  <div class="sync-status" id="syncStatus">
-    <div class="sync-dot" id="syncDot"></div>
-    <span id="syncText">已同步</span>
-  </div>
-  <div class="header-right">
-    <button class="btn-add" onclick="openModal()">
-      <svg style="width:13px;height:13px"><use href="#ic-plus"/></svg>
-      <span>新增事项</span>
-    </button>
-  </div>
-</header>
 
-<!-- 手机端月历抽屉遮罩 -->
-<div class="drawer-mask" id="drawerMask" onclick="closeDrawer()"></div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">登录</button>
+      <button class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">注册</button>
+    </div>
 
-<!-- 手机端月历抽屉内容 -->
-<div class="drawer" id="drawer">
-  <div class="month-nav">
-    <button class="arrow-btn" onclick="prevMonth()">
-      <svg style="width:13px;height:13px"><use href="#ic-left"/></svg>
-    </button>
-    <span class="month-title" id="drawerMonthTitle"></span>
-    <button class="arrow-btn" onclick="nextMonth()">
-      <svg style="width:13px;height:13px"><use href="#ic-right"/></svg>
-    </button>
-  </div>
-  <div class="weekdays">
-    <div class="weekday">日</div><div class="weekday">一</div><div class="weekday">二</div>
-    <div class="weekday">三</div><div class="weekday">四</div><div class="weekday">五</div><div class="weekday">六</div>
-  </div>
-  <div class="days-grid" id="drawerDaysGrid"></div>
-  <div class="legend" style="margin-top:14px">
-    <div class="legend-title">事项分类</div>
-    <div class="legend-item">
-      <div class="legend-dot" style="background:var(--work)"></div>
-      <svg style="width:12px;height:12px;color:var(--work)"><use href="#ic-work"/></svg>
-      工作 <span class="legend-count" id="d-cnt-work">0</span>
-    </div>
-    <div class="legend-item">
-      <div class="legend-dot" style="background:var(--life)"></div>
-      <svg style="width:12px;height:12px;color:var(--life)"><use href="#ic-home"/></svg>
-      生活 <span class="legend-count" id="d-cnt-life">0</span>
-    </div>
-    <div class="legend-item">
-      <div class="legend-dot" style="background:var(--special)"></div>
-      <svg style="width:12px;height:12px;color:var(--special)"><use href="#ic-star"/></svg>
-      特殊 <span class="legend-count" id="d-cnt-special">0</span>
-    </div>
-  </div>
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-num" style="color:var(--work)" id="d-stat-work">0</div>
-      <div class="stat-label">工作</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" style="color:var(--life)" id="d-stat-life">0</div>
-      <div class="stat-label">生活</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" style="color:var(--special)" id="d-stat-special">0</div>
-      <div class="stat-label">标注</div>
+    <div class="auth-body">
+      <!-- 登录表单 -->
+      <form class="auth-form" id="loginForm" onsubmit="doLogin(event)">
+        <div class="auth-field">
+          <label class="auth-label">邮箱</label>
+          <input class="auth-input" id="loginEmail" type="email" placeholder="your@email.com" autocomplete="email" required>
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">密码</label>
+          <input class="auth-input" id="loginPassword" type="password" placeholder="输入密码" autocomplete="current-password" required>
+        </div>
+        <div class="auth-err" id="loginErr"></div>
+        <button class="auth-btn" type="submit" id="loginBtn">登录</button>
+      </form>
+
+      <!-- 注册表单 -->
+      <form class="auth-form hidden" id="registerForm" onsubmit="doRegister(event)">
+        <div class="auth-field auth-nickname show" id="nickField">
+          <label class="auth-label">昵称</label>
+          <input class="auth-input" id="regNickname" type="text" placeholder="你的名字" maxlength="20">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">邮箱</label>
+          <input class="auth-input" id="regEmail" type="email" placeholder="your@email.com" autocomplete="email" required>
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">密码（至少6位）</label>
+          <input class="auth-input" id="regPassword" type="password" placeholder="设置密码" autocomplete="new-password" required minlength="6">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">确认密码</label>
+          <input class="auth-input" id="regPassword2" type="password" placeholder="再次输入密码" autocomplete="new-password" required>
+        </div>
+        <div class="auth-err" id="registerErr"></div>
+        <!-- 注册成功提示 -->
+        <div class="auth-success" id="registerSuccess">
+          <div class="auth-success-icon">
+            <svg><use href="#ic-mail"/></svg>
+          </div>
+          <div class="auth-success-title">注册成功！</div>
+          <div class="auth-success-desc">确认邮件已发送到你的邮箱<br>点击邮件中的链接完成验证后即可登录</div>
+        </div>
+        <button class="auth-btn" type="submit" id="registerBtn">注册账号</button>
+      </form>
+
+      <div class="auth-hint" id="authHint">登录后数据自动同步到所有设备</div>
     </div>
   </div>
 </div>
 
-<div class="main">
-  <!-- PC左侧月历 -->
-  <aside class="sidebar">
+<!-- ══════════════════════════════
+     主应用
+══════════════════════════════ -->
+<div id="appPage">
+
+  <!-- 顶部导航 -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo-icon">
+        <svg style="width:16px;height:16px;color:#fff"><use href="#ic-cal"/></svg>
+      </div>
+      <span class="header-title">我的行事历</span>
+    </div>
+    <div class="sync-status" id="syncStatus">
+      <div class="sync-dot" id="syncDot"></div>
+      <span id="syncText">已同步</span>
+    </div>
+    <div class="header-right">
+      <button class="btn-add" onclick="openModal()">
+        <svg style="width:13px;height:13px"><use href="#ic-plus"/></svg>
+        <span>新增事项</span>
+      </button>
+      <!-- 用户头像菜单 -->
+      <div class="user-menu">
+        <button class="user-avatar" id="userAvatar" onclick="toggleUserMenu()"></button>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="user-dropdown-info">
+            <div class="user-dropdown-name" id="dropdownName">-</div>
+            <div class="user-dropdown-email" id="dropdownEmail">-</div>
+          </div>
+          <div class="user-dropdown-item danger" onclick="doLogout()">
+            <svg style="width:14px;height:14px"><use href="#ic-logout"/></svg>
+            退出登录
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 手机抽屉遮罩 -->
+  <div class="drawer-mask" id="drawerMask" onclick="closeDrawer()"></div>
+  <!-- 手机月历抽屉 -->
+  <div class="drawer" id="drawer">
     <div class="month-nav">
-      <button class="arrow-btn" onclick="prevMonth()">
-        <svg style="width:13px;height:13px"><use href="#ic-left"/></svg>
-      </button>
-      <span class="month-title" id="monthTitle"></span>
-      <button class="arrow-btn" onclick="nextMonth()">
-        <svg style="width:13px;height:13px"><use href="#ic-right"/></svg>
-      </button>
+      <button class="arrow-btn" onclick="prevMonth()"><svg style="width:13px;height:13px"><use href="#ic-left"/></svg></button>
+      <span class="month-title" id="drawerMonthTitle"></span>
+      <button class="arrow-btn" onclick="nextMonth()"><svg style="width:13px;height:13px"><use href="#ic-right"/></svg></button>
     </div>
     <div class="weekdays">
       <div class="weekday">日</div><div class="weekday">一</div><div class="weekday">二</div>
       <div class="weekday">三</div><div class="weekday">四</div><div class="weekday">五</div><div class="weekday">六</div>
     </div>
-    <div class="days-grid" id="daysGrid"></div>
-    <div class="legend">
+    <div class="days-grid" id="drawerDaysGrid"></div>
+    <div class="legend" style="margin-top:14px">
       <div class="legend-title">事项分类</div>
-      <div class="legend-item">
-        <div class="legend-dot" style="background:var(--work)"></div>
-        <svg style="width:12px;height:12px;color:var(--work)"><use href="#ic-work"/></svg>
-        工作事项 <span class="legend-count" id="cnt-work">0</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-dot" style="background:var(--life)"></div>
-        <svg style="width:12px;height:12px;color:var(--life)"><use href="#ic-home"/></svg>
-        生活事项 <span class="legend-count" id="cnt-life">0</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-dot" style="background:var(--special)"></div>
-        <svg style="width:12px;height:12px;color:var(--special)"><use href="#ic-star"/></svg>
-        特殊标注 <span class="legend-count" id="cnt-special">0</span>
-      </div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--work)"></div><svg style="width:12px;height:12px;color:var(--work)"><use href="#ic-work"/></svg>工作 <span class="legend-count" id="d-cnt-work">0</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--life)"></div><svg style="width:12px;height:12px;color:var(--life)"><use href="#ic-home"/></svg>生活 <span class="legend-count" id="d-cnt-life">0</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--special)"></div><svg style="width:12px;height:12px;color:var(--special)"><use href="#ic-star"/></svg>特殊 <span class="legend-count" id="d-cnt-special">0</span></div>
     </div>
     <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-num" style="color:var(--work)" id="stat-work">0</div>
-        <div class="stat-label">工作</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" style="color:var(--life)" id="stat-life">0</div>
-        <div class="stat-label">生活</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" style="color:var(--special)" id="stat-special">0</div>
-        <div class="stat-label">标注</div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- 右侧主内容 -->
-  <main class="content">
-    <!-- 周标签条 -->
-    <div class="date-strip">
-      <span class="date-strip-label" id="stripMonth"></span>
-      <span class="date-strip-sub" id="stripSub"></span>
-      <div class="week-tabs" id="weekTabs"></div>
-    </div>
-
-    <!-- 手机分类 Tab -->
-    <div class="cat-tabs" id="catTabs">
-      <button class="cat-tab active" onclick="switchCat('work',this)">工作</button>
-      <button class="cat-tab" onclick="switchCat('life',this)">生活</button>
-      <button class="cat-tab" onclick="switchCat('special',this)">特殊</button>
-      <button class="cat-tab" onclick="switchCat('timeline',this)">时间轴</button>
-    </div>
-
-    <!-- 三栏（PC）/ 单栏（手机） -->
-    <div class="columns">
-      <div class="column col-work active-col" id="col-work">
-        <div class="col-header">
-          <div class="col-header-left">
-            <div class="col-tag" style="background:var(--work)"></div>
-            <svg style="width:13px;height:13px;color:var(--work)"><use href="#ic-work"/></svg>
-            <span class="col-title">工作事项</span>
-            <span class="col-count" id="hd-work">0</span>
-          </div>
-          <button class="col-add" onclick="openModal('work')">
-            <svg style="width:11px;height:11px"><use href="#ic-plus"/></svg>
-          </button>
-        </div>
-        <div class="col-body" id="list-work"></div>
-      </div>
-
-      <div class="column col-life" id="col-life">
-        <div class="col-header">
-          <div class="col-header-left">
-            <div class="col-tag" style="background:var(--life)"></div>
-            <svg style="width:13px;height:13px;color:var(--life)"><use href="#ic-home"/></svg>
-            <span class="col-title">生活事项</span>
-            <span class="col-count" id="hd-life">0</span>
-          </div>
-          <button class="col-add" onclick="openModal('life')">
-            <svg style="width:11px;height:11px"><use href="#ic-plus"/></svg>
-          </button>
-        </div>
-        <div class="col-body" id="list-life"></div>
-      </div>
-
-      <div class="column col-special" id="col-special">
-        <div class="col-header">
-          <div class="col-header-left">
-            <div class="col-tag" style="background:var(--special)"></div>
-            <svg style="width:13px;height:13px;color:var(--special)"><use href="#ic-star"/></svg>
-            <span class="col-title">特殊标注</span>
-            <span class="col-count" id="hd-special">0</span>
-          </div>
-          <button class="col-add" onclick="openModal('special')">
-            <svg style="width:11px;height:11px"><use href="#ic-plus"/></svg>
-          </button>
-        </div>
-        <div class="col-body" id="list-special"></div>
-      </div>
-    </div>
-
-    <!-- 时间轴 -->
-    <div class="timeline-section" id="timelineSection">
-      <div class="section-label">当日时间轴</div>
-      <div class="timeline" id="timeline"></div>
-    </div>
-  </main>
-</div>
-
-<!-- 手机底部 Tab Bar -->
-<nav class="bottom-nav">
-  <div class="bottom-nav-inner">
-    <button class="bnav-item active" id="bnav-cal" onclick="openDrawer()">
-      <svg><use href="#ic-cal"/></svg>
-      <span>日历</span>
-    </button>
-    <button class="bnav-item" id="bnav-today" onclick="goToday()">
-      <svg><use href="#ic-clock"/></svg>
-      <span>今天</span>
-    </button>
-    <button class="bnav-fab" onclick="openModal()">
-      <svg style="width:22px;height:22px;color:#fff"><use href="#ic-plus"/></svg>
-    </button>
-    <button class="bnav-item" id="bnav-work" onclick="switchCatBtn('work')">
-      <svg><use href="#ic-work"/></svg>
-      <span>工作</span>
-    </button>
-    <button class="bnav-item" id="bnav-tl" onclick="switchCatBtn('timeline')">
-      <svg><use href="#ic-timeline"/></svg>
-      <span>时间轴</span>
-    </button>
-  </div>
-</nav>
-
-<!-- Modal 弹层 -->
-<div class="modal-mask" id="modalMask" onclick="handleMaskClick(event)">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <span class="modal-title">新增事项</span>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-row">
-        <label class="form-label">事项标题 *</label>
-        <input class="form-input" id="fTitle" placeholder="输入事项内容…" maxlength="100">
-      </div>
-      <div class="form-row-2">
-        <div class="form-row">
-          <label class="form-label">分类</label>
-          <select class="form-select" id="fCategory">
-            <option value="work">工作事项</option>
-            <option value="life">生活事项</option>
-            <option value="special">特殊标注</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label class="form-label">优先级</label>
-          <select class="form-select" id="fPriority">
-            <option value="high">高</option>
-            <option value="mid" selected>中</option>
-            <option value="low">低</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row-2">
-        <div class="form-row">
-          <label class="form-label">日期</label>
-          <input class="form-input" id="fDate" type="date">
-        </div>
-        <div class="form-row">
-          <label class="form-label">时间（可选）</label>
-          <input class="form-input" id="fTime" type="time">
-        </div>
-      </div>
-      <div class="form-row">
-        <label class="form-label">备注（可选）</label>
-        <textarea class="form-textarea" id="fNote" placeholder="补充说明…" maxlength="300"></textarea>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeModal()">取消</button>
-      <button class="btn-save" id="btnSave" onclick="saveEvent()">保存</button>
+      <div class="stat-card"><div class="stat-num" style="color:var(--work)" id="d-stat-work">0</div><div class="stat-label">工作</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--life)" id="d-stat-life">0</div><div class="stat-label">生活</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--special)" id="d-stat-special">0</div><div class="stat-label">标注</div></div>
     </div>
   </div>
-</div>
+
+  <div class="main">
+    <!-- PC左侧月历 -->
+    <aside class="sidebar">
+      <div class="month-nav">
+        <button class="arrow-btn" onclick="prevMonth()"><svg style="width:13px;height:13px"><use href="#ic-left"/></svg></button>
+        <span class="month-title" id="monthTitle"></span>
+        <button class="arrow-btn" onclick="nextMonth()"><svg style="width:13px;height:13px"><use href="#ic-right"/></svg></button>
+      </div>
+      <div class="weekdays">
+        <div class="weekday">日</div><div class="weekday">一</div><div class="weekday">二</div>
+        <div class="weekday">三</div><div class="weekday">四</div><div class="weekday">五</div><div class="weekday">六</div>
+      </div>
+      <div class="days-grid" id="daysGrid"></div>
+      <div class="legend">
+        <div class="legend-title">事项分类</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--work)"></div><svg style="width:12px;height:12px;color:var(--work)"><use href="#ic-work"/></svg>工作事项 <span class="legend-count" id="cnt-work">0</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--life)"></div><svg style="width:12px;height:12px;color:var(--life)"><use href="#ic-home"/></svg>生活事项 <span class="legend-count" id="cnt-life">0</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--special)"></div><svg style="width:12px;height:12px;color:var(--special)"><use href="#ic-star"/></svg>特殊标注 <span class="legend-count" id="cnt-special">0</span></div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-num" style="color:var(--work)" id="stat-work">0</div><div class="stat-label">工作</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:var(--life)" id="stat-life">0</div><div class="stat-label">生活</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:var(--special)" id="stat-special">0</div><div class="stat-label">标注</div></div>
+      </div>
+    </aside>
+
+    <!-- 右侧内容 -->
+    <main class="content">
+      <div class="date-strip">
+        <span class="date-strip-label" id="stripMonth"></span>
+        <span class="date-strip-sub" id="stripSub"></span>
+        <div class="week-tabs" id="weekTabs"></div>
+      </div>
+      <div class="cat-tabs" id="catTabs">
+        <button class="cat-tab active" onclick="switchCat('work',this)">工作</button>
+        <button class="cat-tab" onclick="switchCat('life',this)">生活</button>
+        <button class="cat-tab" onclick="switchCat('special',this)">特殊</button>
+        <button class="cat-tab" onclick="switchCat('timeline',this)">时间轴</button>
+      </div>
+      <div class="columns">
+        <div class="column col-work active-col" id="col-work">
+          <div class="col-header">
+            <div class="col-header-left"><div class="col-tag" style="background:var(--work)"></div><svg style="width:13px;height:13px;color:var(--work)"><use href="#ic-work"/></svg><span class="col-title">工作事项</span><span class="col-count" id="hd-work">0</span></div>
+            <button class="col-add" onclick="openModal('work')"><svg style="width:11px;height:11px"><use href="#ic-plus"/></svg></button>
+          </div>
+          <div class="col-body" id="list-work"></div>
+        </div>
+        <div class="column col-life" id="col-life">
+          <div class="col-header">
+            <div class="col-header-left"><div class="col-tag" style="background:var(--life)"></div><svg style="width:13px;height:13px;color:var(--life)"><use href="#ic-home"/></svg><span class="col-title">生活事项</span><span class="col-count" id="hd-life">0</span></div>
+            <button class="col-add" onclick="openModal('life')"><svg style="width:11px;height:11px"><use href="#ic-plus"/></svg></button>
+          </div>
+          <div class="col-body" id="list-life"></div>
+        </div>
+        <div class="column col-special" id="col-special">
+          <div class="col-header">
+            <div class="col-header-left"><div class="col-tag" style="background:var(--special)"></div><svg style="width:13px;height:13px;color:var(--special)"><use href="#ic-star"/></svg><span class="col-title">特殊标注</span><span class="col-count" id="hd-special">0</span></div>
+            <button class="col-add" onclick="openModal('special')"><svg style="width:11px;height:11px"><use href="#ic-plus"/></svg></button>
+          </div>
+          <div class="col-body" id="list-special"></div>
+        </div>
+      </div>
+      <div class="timeline-section" id="timelineSection">
+        <div class="section-label">当日时间轴</div>
+        <div class="timeline" id="timeline"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 手机底部导航 -->
+  <nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <button class="bnav-item active" onclick="openDrawer()"><svg><use href="#ic-cal"/></svg><span>日历</span></button>
+      <button class="bnav-item" onclick="goToday()"><svg><use href="#ic-clock"/></svg><span>今天</span></button>
+      <button class="bnav-fab" onclick="openModal()"><svg style="width:22px;height:22px;color:#fff"><use href="#ic-plus"/></svg></button>
+      <button class="bnav-item" onclick="switchCatBtn('work')"><svg><use href="#ic-work"/></svg><span>工作</span></button>
+      <button class="bnav-item" onclick="switchCatBtn('timeline')"><svg><use href="#ic-timeline"/></svg><span>时间轴</span></button>
+    </div>
+  </nav>
+
+  <!-- 事项 Modal -->
+  <div class="modal-mask" id="modalMask" onclick="handleMaskClick(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-title">新增事项</span>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row"><label class="form-label">事项标题 *</label><input class="form-input" id="fTitle" placeholder="输入事项内容…" maxlength="100"></div>
+        <div class="form-row-2">
+          <div class="form-row"><label class="form-label">分类</label><select class="form-select" id="fCategory"><option value="work">工作事项</option><option value="life">生活事项</option><option value="special">特殊标注</option></select></div>
+          <div class="form-row"><label class="form-label">优先级</label><select class="form-select" id="fPriority"><option value="high">高</option><option value="mid" selected>中</option><option value="low">低</option></select></div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-row"><label class="form-label">日期</label><input class="form-input" id="fDate" type="date"></div>
+          <div class="form-row"><label class="form-label">时间（可选）</label><input class="form-input" id="fTime" type="time"></div>
+        </div>
+        <div class="form-row"><label class="form-label">备注（可选）</label><textarea class="form-textarea" id="fNote" placeholder="补充说明…" maxlength="300"></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">取消</button>
+        <button class="btn-save" id="btnSave" onclick="saveEvent()">保存</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- #appPage -->
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ════════════════════════════════
-//  Supabase
-// ════════════════════════════════
-const SUPABASE_URL = 'https://oownnwrmvlezuacoqkiu.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_E5AJzdBr6TsnoLfS4AMH9w_oy26Ro_O';
+// ════════════════════════════════════════
+//  Supabase 配置
+// ════════════════════════════════════════
+const SB_URL = 'https://oownnwrmvlezuacoqkiu.supabase.co';
+const SB_KEY = 'sb_publishable_E5AJzdBr6TsnoLfS4AMH9w_oy26Ro_O';
 
+// ── Auth 请求 ──
+async function authReq(path, body) {
+  const res = await fetch(`${SB_URL}/auth/v1/${path}`, {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error_description || data.msg || '操作失败');
+  return data;
+}
+
+// ── 获取当前 session ──
+async function getSession() {
+  const res = await fetch(`${SB_URL}/auth/v1/user`, {
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + (currentToken || '') }
+  });
+  if (!res.ok) return null;
+  return await res.json();
+}
+
+// ── 数据请求（带 token）──
 async function sbFetch(path, options = {}) {
-  const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
+  const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
     ...options,
     headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + currentToken,
       'Content-Type': 'application/json',
       'Prefer': options.prefer || 'return=representation',
       ...(options.headers || {})
@@ -742,210 +816,241 @@ async function sbFetch(path, options = {}) {
   return text ? JSON.parse(text) : [];
 }
 
-// ════════════════════════════════
-//  状态
-// ════════════════════════════════
-const todayDate = new Date();
-todayDate.setHours(0,0,0,0);
+// ════════════════════════════════════════
+//  Auth 状态
+// ════════════════════════════════════════
+let currentToken = localStorage.getItem('cal_token') || '';
+let currentUser  = null;
 
+// ── 登录 ──
+async function doLogin(e) {
+  e.preventDefault();
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const btn      = document.getElementById('loginBtn');
+  const errEl    = document.getElementById('loginErr');
+  errEl.classList.remove('show');
+  btn.disabled = true; btn.textContent = '登录中…';
+  try {
+    const data = await authReq('token?grant_type=password', { email, password });
+    currentToken = data.access_token;
+    currentUser  = data.user;
+    localStorage.setItem('cal_token', currentToken);
+    enterApp(currentUser);
+  } catch(err) {
+    errEl.textContent = err.message.includes('Invalid') ? '邮箱或密码错误' : err.message;
+    errEl.classList.add('show');
+  } finally {
+    btn.disabled = false; btn.textContent = '登录';
+  }
+}
+
+// ── 注册 ──
+async function doRegister(e) {
+  e.preventDefault();
+  const nickname  = document.getElementById('regNickname').value.trim();
+  const email     = document.getElementById('regEmail').value.trim();
+  const password  = document.getElementById('regPassword').value;
+  const password2 = document.getElementById('regPassword2').value;
+  const btn       = document.getElementById('registerBtn');
+  const errEl     = document.getElementById('registerErr');
+  errEl.classList.remove('show');
+
+  if (password !== password2) {
+    errEl.textContent = '两次密码不一致';
+    errEl.classList.add('show');
+    return;
+  }
+  btn.disabled = true; btn.textContent = '注册中…';
+  try {
+    await authReq('signup', {
+      email, password,
+      data: { nickname: nickname || email.split('@')[0] }
+    });
+    // 显示成功提示
+    document.getElementById('registerForm').querySelectorAll('.auth-field, .auth-btn').forEach(el => el.style.display = 'none');
+    document.getElementById('registerErr').style.display = 'none';
+    document.getElementById('registerSuccess').classList.add('show');
+    document.getElementById('authHint').textContent = '验证邮件已发送，请检查收件箱';
+  } catch(err) {
+    errEl.textContent = err.message.includes('already') ? '该邮箱已注册，请直接登录' : err.message;
+    errEl.classList.add('show');
+    btn.disabled = false; btn.textContent = '注册账号';
+  }
+}
+
+// ── 退出 ──
+async function doLogout() {
+  try {
+    await fetch(`${SB_URL}/auth/v1/logout`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + currentToken }
+    });
+  } catch(_) {}
+  currentToken = '';
+  currentUser  = null;
+  localStorage.removeItem('cal_token');
+  document.getElementById('appPage').classList.remove('show');
+  document.getElementById('authPage').style.display = 'flex';
+  document.getElementById('userDropdown').classList.remove('show');
+  showToast('已退出登录');
+}
+
+// ── Tab 切换 ──
+function switchAuthTab(tab) {
+  document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
+  document.getElementById('registerForm').classList.toggle('hidden', tab !== 'register');
+  document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+  document.getElementById('loginErr').classList.remove('show');
+  document.getElementById('registerErr').classList.remove('show');
+}
+
+// ── 进入主应用 ──
+function enterApp(user) {
+  currentUser = user;
+  const meta     = user.user_metadata || {};
+  const nickname = meta.nickname || user.email.split('@')[0];
+  const initials = nickname.slice(0,1).toUpperCase();
+
+  document.getElementById('userAvatar').textContent = initials;
+  document.getElementById('dropdownName').textContent = nickname;
+  document.getElementById('dropdownEmail').textContent = user.email;
+
+  document.getElementById('authPage').style.display = 'none';
+  document.getElementById('appPage').classList.add('show');
+  initCalendar();
+}
+
+// ── 用户下拉菜单 ──
+function toggleUserMenu() {
+  document.getElementById('userDropdown').classList.toggle('show');
+}
+document.addEventListener('click', e => {
+  const menu = document.getElementById('userDropdown');
+  if (menu && !document.querySelector('.user-menu').contains(e.target)) {
+    menu.classList.remove('show');
+  }
+});
+
+// ════════════════════════════════════════
+//  行事历主逻辑
+// ════════════════════════════════════════
+const todayDate = new Date(); todayDate.setHours(0,0,0,0);
 let calYear  = todayDate.getFullYear();
 let calMonth = todayDate.getMonth();
 let selDate  = fmt(todayDate);
 let events   = [];
 let monthEvtMap = {};
-let activeCat = 'work'; // 手机端当前展示的分类
+let activeCat   = 'work';
 
-// ════════════════════════════════
-//  工具
-// ════════════════════════════════
 function fmt(d) {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
-function parseDate(s) {
-  const [y,m,d] = s.split('-').map(Number);
-  return new Date(y,m-1,d);
-}
-function weekNum(d) {
-  const s = new Date(d.getFullYear(),0,1);
-  return Math.ceil(((d-s)/86400000 + s.getDay()+1)/7);
-}
+function parseDate(s) { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+function weekNum(d) { const s=new Date(d.getFullYear(),0,1); return Math.ceil(((d-s)/86400000+s.getDay()+1)/7); }
 const WD = ['日','一','二','三','四','五','六'];
-const PRI_LABEL = { high:'高优先', mid:'中优先', low:'低优先' };
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function isMobile() { return window.innerWidth <= 640; }
+const PRI = { high:'高优先', mid:'中优先', low:'低优先' };
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function isMobile() { return window.innerWidth<=640; }
 
-// ════════════════════════════════
-//  同步状态
-// ════════════════════════════════
 function setSyncState(s) {
-  const dot = document.getElementById('syncDot');
-  const txt = document.getElementById('syncText');
-  dot.className = 'sync-dot' + (s==='syncing'?' syncing':s==='error'?' error':'');
-  txt.textContent = s==='syncing'?'同步中…':s==='error'?'失败':'已同步';
+  const dot=document.getElementById('syncDot'), txt=document.getElementById('syncText');
+  dot.className='sync-dot'+(s==='syncing'?' syncing':s==='error'?' error':'');
+  txt.textContent=s==='syncing'?'同步中…':s==='error'?'失败':'已同步';
 }
 
-// ════════════════════════════════
-//  数据加载
-// ════════════════════════════════
+// 数据加载（自动带 user_id 过滤，由 RLS 保证）
 async function loadDay(dateStr) {
   setSyncState('syncing');
   try {
-    events = await sbFetch(`events?date=eq.${dateStr}&order=time_start.asc.nullslast,created_at.asc`, { headers:{'Prefer':''} });
+    events = await sbFetch(`events?date=eq.${dateStr}&order=time_start.asc.nullslast,created_at.asc`, {headers:{'Prefer':''}});
     setSyncState('ok');
-  } catch(e) {
-    setSyncState('error');
-    showToast('加载失败，请检查网络');
-    events = [];
-  }
-  renderColumns();
-  renderTimeline();
+  } catch(e) { setSyncState('error'); showToast('加载失败'); events=[]; }
+  renderColumns(); renderTimeline();
 }
 
 async function loadMonthDots(year, month) {
-  const from = `${year}-${String(month+1).padStart(2,'0')}-01`;
-  const lastDay = new Date(year,month+1,0).getDate();
-  const to = `${year}-${String(month+1).padStart(2,'0')}-${String(lastDay).padStart(2,'0')}`;
+  const from=`${year}-${String(month+1).padStart(2,'0')}-01`;
+  const lastDay=new Date(year,month+1,0).getDate();
+  const to=`${year}-${String(month+1).padStart(2,'0')}-${String(lastDay).padStart(2,'0')}`;
   try {
-    const data = await sbFetch(`events?date=gte.${from}&date=lte.${to}&select=date,category`, { headers:{'Prefer':''} });
-    monthEvtMap = {};
-    data.forEach(e => {
-      if (!monthEvtMap[e.date]) monthEvtMap[e.date] = new Set();
-      monthEvtMap[e.date].add(e.category);
-    });
-  } catch(e) { monthEvtMap = {}; }
+    const data=await sbFetch(`events?date=gte.${from}&date=lte.${to}&select=date,category`,{headers:{'Prefer':''}});
+    monthEvtMap={};
+    data.forEach(e=>{ if(!monthEvtMap[e.date]) monthEvtMap[e.date]=new Set(); monthEvtMap[e.date].add(e.category); });
+  } catch(e) { monthEvtMap={}; }
 }
 
-// ════════════════════════════════
-//  月历渲染（PC + 抽屉共用）
-// ════════════════════════════════
 function buildCalendarGrid(gridEl, titleEl) {
-  titleEl.textContent = `${calYear}年 ${calMonth+1}月`;
-  gridEl.innerHTML = '';
-
-  const firstDay = new Date(calYear,calMonth,1).getDay();
-  const daysInMonth = new Date(calYear,calMonth+1,0).getDate();
-  const prevDays = new Date(calYear,calMonth,0).getDate();
-
-  for (let i=firstDay-1;i>=0;i--) {
-    const c = document.createElement('div');
-    c.className='day-cell other-month';
-    c.textContent=prevDays-i;
-    gridEl.appendChild(c);
-  }
-  for (let d=1;d<=daysInMonth;d++) {
+  titleEl.textContent=`${calYear}年 ${calMonth+1}月`;
+  gridEl.innerHTML='';
+  const firstDay=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const prevDays=new Date(calYear,calMonth,0).getDate();
+  for(let i=firstDay-1;i>=0;i--){const c=document.createElement('div');c.className='day-cell other-month';c.textContent=prevDays-i;gridEl.appendChild(c);}
+  for(let d=1;d<=daysInMonth;d++){
     const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const c=document.createElement('div');
-    c.className='day-cell';
-    if (fmt(new Date(calYear,calMonth,d))===fmt(todayDate)) c.classList.add('today');
-    if (ds===selDate) c.classList.add('selected');
-
-    const num=document.createElement('span');
-    num.textContent=d;
-    c.appendChild(num);
-
+    const c=document.createElement('div'); c.className='day-cell';
+    if(fmt(new Date(calYear,calMonth,d))===fmt(todayDate)) c.classList.add('today');
+    if(ds===selDate) c.classList.add('selected');
+    const num=document.createElement('span'); num.textContent=d; c.appendChild(num);
     const cats=monthEvtMap[ds];
-    if (cats&&cats.size>0) {
-      const dr=document.createElement('div');
-      dr.className='dots';
+    if(cats&&cats.size>0){
+      const dr=document.createElement('div'); dr.className='dots';
       const colors={work:'var(--work)',life:'var(--life)',special:'var(--special)'};
-      cats.forEach(ct=>{
-        const dot=document.createElement('div');
-        dot.className='dot';
-        dot.style.background=c.classList.contains('today')?'rgba(255,255,255,0.7)':colors[ct];
-        dr.appendChild(dot);
-      });
+      cats.forEach(ct=>{const dot=document.createElement('div');dot.className='dot';dot.style.background=c.classList.contains('today')?'rgba(255,255,255,0.7)':colors[ct];dr.appendChild(dot);});
       c.appendChild(dr);
     }
-    c.onclick=()=>{ selectDate(ds); if(isMobile()) closeDrawer(); };
+    c.onclick=()=>{selectDate(ds);if(isMobile())closeDrawer();};
     gridEl.appendChild(c);
   }
-  const total=firstDay+daysInMonth;
-  const remain=total%7===0?0:7-(total%7);
-  for (let i=1;i<=remain;i++) {
-    const c=document.createElement('div');
-    c.className='day-cell other-month';
-    c.textContent=i;
-    gridEl.appendChild(c);
-  }
+  const total=firstDay+daysInMonth; const remain=total%7===0?0:7-(total%7);
+  for(let i=1;i<=remain;i++){const c=document.createElement('div');c.className='day-cell other-month';c.textContent=i;gridEl.appendChild(c);}
 }
 
 function renderCalendar() {
-  buildCalendarGrid(document.getElementById('daysGrid'), document.getElementById('monthTitle'));
-  buildCalendarGrid(document.getElementById('drawerDaysGrid'), document.getElementById('drawerMonthTitle'));
+  buildCalendarGrid(document.getElementById('daysGrid'),document.getElementById('monthTitle'));
+  buildCalendarGrid(document.getElementById('drawerDaysGrid'),document.getElementById('drawerMonthTitle'));
 }
 
-// ════════════════════════════════
-//  周标签条
-// ════════════════════════════════
 function renderWeekTabs() {
-  const sel=parseDate(selDate);
-  const dow=sel.getDay();
+  const sel=parseDate(selDate); const dow=sel.getDay();
   const sun=new Date(sel); sun.setDate(sel.getDate()-dow);
-
   document.getElementById('stripMonth').textContent=`${sel.getMonth()+1}月`;
   document.getElementById('stripSub').textContent=`${sel.getFullYear()} · 第${weekNum(sel)}周`;
-
-  const tabs=document.getElementById('weekTabs');
-  tabs.innerHTML='';
+  const tabs=document.getElementById('weekTabs'); tabs.innerHTML='';
   for(let i=0;i<7;i++){
-    const d=new Date(sun); d.setDate(sun.getDate()+i);
-    const ds=fmt(d);
-    const tab=document.createElement('div');
-    tab.className='week-tab'+(ds===selDate?' active':'');
-    const cats=monthEvtMap[ds];
-    let dotsHtml='';
+    const d=new Date(sun); d.setDate(sun.getDate()+i); const ds=fmt(d);
+    const tab=document.createElement('div'); tab.className='week-tab'+(ds===selDate?' active':'');
+    const cats=monthEvtMap[ds]; let dotsHtml='';
     if(cats&&cats.size>0){
       const isActive=ds===selDate;
       const colors={work:'var(--work)',life:'var(--life)',special:'var(--special)'};
-      [...cats].forEach(c=>{
-        const col=isActive?'rgba(255,255,255,0.7)':colors[c];
-        dotsHtml+=`<div class="wdot" style="background:${col}"></div>`;
-      });
+      [...cats].forEach(c=>{const col=isActive?'rgba(255,255,255,0.7)':colors[c];dotsHtml+=`<div class="wdot" style="background:${col}"></div>`;});
     }
     tab.innerHTML=`<span class="wd">${WD[i]}</span><span class="dd">${d.getDate()}</span><div class="dot-row">${dotsHtml}</div>`;
-    tab.onclick=()=>selectDate(ds);
-    tabs.appendChild(tab);
+    tab.onclick=()=>selectDate(ds); tabs.appendChild(tab);
   }
 }
 
-// ════════════════════════════════
-//  三栏渲染
-// ════════════════════════════════
 function renderColumns() {
   ['work','life','special'].forEach(cat=>{
-    const items=events.filter(e=>e.category===cat);
-    const n=items.length;
-    document.getElementById('hd-'+cat).textContent=n;
-    document.getElementById('cnt-'+cat).textContent=n;
-    document.getElementById('d-cnt-'+cat).textContent=n;
-    document.getElementById('stat-'+cat).textContent=n;
-    document.getElementById('d-stat-'+cat).textContent=n;
-
-    const list=document.getElementById('list-'+cat);
-    list.innerHTML='';
-    if(items.length===0){
-      list.innerHTML='<div class="empty-hint">暂无事项</div>';
-    } else {
-      items.forEach(ev=>list.appendChild(makeCard(ev,cat)));
-    }
-    const btn=document.createElement('button');
-    btn.className='add-item-btn';
+    const items=events.filter(e=>e.category===cat); const n=items.length;
+    ['hd-','cnt-','d-cnt-'].forEach(p=>document.getElementById(p+cat).textContent=n);
+    ['stat-','d-stat-'].forEach(p=>document.getElementById(p+cat).textContent=n);
+    const list=document.getElementById('list-'+cat); list.innerHTML='';
+    if(n===0){list.innerHTML='<div class="empty-hint">暂无事项</div>';}
+    else{items.forEach(ev=>list.appendChild(makeCard(ev,cat)));}
+    const btn=document.createElement('button'); btn.className='add-item-btn';
     const label=cat==='work'?'工作':cat==='life'?'生活':'特殊';
     btn.innerHTML=`<svg style="width:11px;height:11px"><use href="#ic-plus"/></svg> 添加${label}事项`;
-    btn.onclick=()=>openModal(cat);
-    list.appendChild(btn);
+    btn.onclick=()=>openModal(cat); list.appendChild(btn);
   });
-
-  // 手机端同步列显示状态
   applyActiveCat();
 }
 
-function makeCard(ev, cat) {
-  const card=document.createElement('div');
-  card.className='item-card';
-  const timeStr=ev.time_start||'全天';
+function makeCard(ev,cat){
+  const card=document.createElement('div'); card.className='item-card';
   card.innerHTML=`
     <div class="item-top">
       <span class="item-title${ev.done?' done':''}">${escHtml(ev.title)}</span>
@@ -957,126 +1062,45 @@ function makeCard(ev, cat) {
       </div>
     </div>
     <div class="item-meta">
-      <span class="item-time">
-        <svg style="width:11px;height:11px"><use href="#ic-clock"/></svg>
-        ${escHtml(timeStr)}
-      </span>
-      <span class="item-tag tag-${ev.priority}">${PRI_LABEL[ev.priority]||''}</span>
+      <span class="item-time"><svg style="width:11px;height:11px"><use href="#ic-clock"/></svg>${escHtml(ev.time_start||'全天')}</span>
+      <span class="item-tag tag-${ev.priority}">${PRI[ev.priority]||''}</span>
     </div>
-    ${ev.note?`<div class="item-note">${escHtml(ev.note)}</div>`:''}
-  `;
+    ${ev.note?`<div class="item-note">${escHtml(ev.note)}</div>`:''}`;
   return card;
 }
 
-// ════════════════════════════════
-//  时间轴
-// ════════════════════════════════
-function renderTimeline() {
+function renderTimeline(){
   const tl=document.getElementById('timeline');
   const timed=events.filter(e=>e.time_start).sort((a,b)=>a.time_start.localeCompare(b.time_start));
-  if(timed.length===0){
-    tl.innerHTML='<div class="empty-hint">当天暂无定时事项</div>';
-    return;
-  }
+  if(timed.length===0){tl.innerHTML='<div class="empty-hint">当天暂无定时事项</div>';return;}
   tl.innerHTML='';
   timed.forEach((ev,idx)=>{
-    const slot=document.createElement('div');
-    slot.className='timeline-slot';
-    const isLast=idx===timed.length-1;
-    slot.innerHTML=`
-      <div class="time-label">${ev.time_start}</div>
-      <div class="timeline-line">
-        <div class="timeline-dot ${ev.category}"></div>
-        ${isLast?'':'<div class="timeline-vline"></div>'}
-      </div>
-      <div class="timeline-event">
-        <div class="tl-card ${ev.category}">
-          <div class="tl-card-title">${escHtml(ev.title)}</div>
-          <div class="tl-card-time">${ev.done?'已完成':'待处理'}</div>
-        </div>
-      </div>
-    `;
+    const slot=document.createElement('div'); slot.className='timeline-slot'; const isLast=idx===timed.length-1;
+    slot.innerHTML=`<div class="time-label">${ev.time_start}</div><div class="timeline-line"><div class="timeline-dot ${ev.category}"></div>${isLast?'':'<div class="timeline-vline"></div>'}</div><div class="timeline-event"><div class="tl-card ${ev.category}"><div class="tl-card-title">${escHtml(ev.title)}</div><div class="tl-card-time">${ev.done?'已完成':'待处理'}</div></div></div>`;
     tl.appendChild(slot);
   });
 }
 
-// ════════════════════════════════
-//  手机端分类切换
-// ════════════════════════════════
-function switchCat(cat, btn) {
-  activeCat=cat;
-  // 更新 Tab 样式
-  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  applyActiveCat();
+function switchCat(cat,btn){activeCat=cat;document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');applyActiveCat();}
+function switchCatBtn(cat){activeCat=cat;document.querySelectorAll('.cat-tab').forEach((b,i)=>{const cats=['work','life','special','timeline'];b.classList.toggle('active',cats[i]===cat);});applyActiveCat();}
+function applyActiveCat(){
+  if(!isMobile())return;
+  ['work','life','special'].forEach(c=>document.getElementById('col-'+c).classList.toggle('active-col',c===activeCat));
+  document.getElementById('timelineSection').style.display=activeCat==='timeline'?'block':'none';
 }
 
-function switchCatBtn(cat) {
-  activeCat=cat;
-  document.querySelectorAll('.cat-tab').forEach((b,i)=>{
-    const cats=['work','life','special','timeline'];
-    b.classList.toggle('active', cats[i]===cat);
-  });
-  applyActiveCat();
+async function selectDate(dateStr){
+  selDate=dateStr; const d=parseDate(dateStr);
+  if(d.getFullYear()!==calYear||d.getMonth()!==calMonth){calYear=d.getFullYear();calMonth=d.getMonth();await loadMonthDots(calYear,calMonth);}
+  renderCalendar(); renderWeekTabs(); await loadDay(dateStr);
 }
+async function prevMonth(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}await loadMonthDots(calYear,calMonth);renderCalendar();renderWeekTabs();}
+async function nextMonth(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}await loadMonthDots(calYear,calMonth);renderCalendar();renderWeekTabs();}
+function goToday(){selectDate(fmt(todayDate));}
+function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('drawerMask').classList.add('show');}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('drawerMask').classList.remove('show');}
 
-function applyActiveCat() {
-  if(!isMobile()) return; // PC不处理
-  ['work','life','special'].forEach(c=>{
-    const col=document.getElementById('col-'+c);
-    col.classList.toggle('active-col', c===activeCat);
-  });
-  const ts=document.getElementById('timelineSection');
-  ts.style.display=activeCat==='timeline'?'block':'none';
-  // PC端时间轴始终显示
-  if(!isMobile()) ts.style.display='block';
-}
-
-// ════════════════════════════════
-//  日期选择 & 月份导航
-// ════════════════════════════════
-async function selectDate(dateStr) {
-  selDate=dateStr;
-  const d=parseDate(dateStr);
-  if(d.getFullYear()!==calYear||d.getMonth()!==calMonth){
-    calYear=d.getFullYear(); calMonth=d.getMonth();
-    await loadMonthDots(calYear,calMonth);
-  }
-  renderCalendar();
-  renderWeekTabs();
-  await loadDay(dateStr);
-}
-
-async function prevMonth() {
-  calMonth--; if(calMonth<0){calMonth=11;calYear--;}
-  await loadMonthDots(calYear,calMonth);
-  renderCalendar(); renderWeekTabs();
-}
-
-async function nextMonth() {
-  calMonth++; if(calMonth>11){calMonth=0;calYear++;}
-  await loadMonthDots(calYear,calMonth);
-  renderCalendar(); renderWeekTabs();
-}
-
-function goToday() { selectDate(fmt(todayDate)); }
-
-// ════════════════════════════════
-//  抽屉（手机月历）
-// ════════════════════════════════
-function openDrawer() {
-  document.getElementById('drawer').classList.add('open');
-  document.getElementById('drawerMask').classList.add('show');
-}
-function closeDrawer() {
-  document.getElementById('drawer').classList.remove('open');
-  document.getElementById('drawerMask').classList.remove('show');
-}
-
-// ════════════════════════════════
-//  Modal
-// ════════════════════════════════
-function openModal(defaultCat) {
+function openModal(defaultCat){
   document.getElementById('fTitle').value='';
   document.getElementById('fCategory').value=defaultCat||activeCat||'work';
   document.getElementById('fPriority').value='mid';
@@ -1088,17 +1112,14 @@ function openModal(defaultCat) {
   document.getElementById('modalMask').classList.add('show');
   setTimeout(()=>document.getElementById('fTitle').focus(),150);
 }
-function closeModal() { document.getElementById('modalMask').classList.remove('show'); }
-function handleMaskClick(e) { if(e.target===document.getElementById('modalMask')) closeModal(); }
+function closeModal(){document.getElementById('modalMask').classList.remove('show');}
+function handleMaskClick(e){if(e.target===document.getElementById('modalMask'))closeModal();}
 
-// ════════════════════════════════
-//  保存
-// ════════════════════════════════
-async function saveEvent() {
+async function saveEvent(){
   const title=document.getElementById('fTitle').value.trim();
-  if(!title){ showToast('请填写事项标题'); document.getElementById('fTitle').focus(); return; }
+  if(!title){showToast('请填写事项标题');document.getElementById('fTitle').focus();return;}
   const btn=document.getElementById('btnSave');
-  btn.disabled=true; btn.textContent='保存中…'; setSyncState('syncing');
+  btn.disabled=true;btn.textContent='保存中…';setSyncState('syncing');
   const payload={
     title,
     category:document.getElementById('fCategory').value,
@@ -1106,81 +1127,66 @@ async function saveEvent() {
     date:document.getElementById('fDate').value,
     time_start:document.getElementById('fTime').value||null,
     note:document.getElementById('fNote').value.trim()||null,
-    done:false
+    done:false,
+    user_id:currentUser.id
   };
-  try {
+  try{
     await sbFetch('events',{method:'POST',body:JSON.stringify(payload)});
-    setSyncState('ok'); closeModal(); showToast('已保存 ✓');
-    await loadMonthDots(calYear,calMonth);
-    renderCalendar(); renderWeekTabs();
-    if(payload.date===selDate) await loadDay(selDate);
-  } catch(e) {
-    setSyncState('error'); showToast('保存失败：'+e.message);
-    btn.disabled=false; btn.textContent='保存';
-  }
+    setSyncState('ok');closeModal();showToast('已保存 ✓');
+    await loadMonthDots(calYear,calMonth);renderCalendar();renderWeekTabs();
+    if(payload.date===selDate)await loadDay(selDate);
+  }catch(e){setSyncState('error');showToast('保存失败：'+e.message);btn.disabled=false;btn.textContent='保存';}
 }
 
-// ════════════════════════════════
-//  勾选 & 删除
-// ════════════════════════════════
-async function toggleDone(id,cur,e) {
-  e.stopPropagation(); setSyncState('syncing');
-  try {
-    await sbFetch(`events?id=eq.${id}`,{method:'PATCH',prefer:'return=minimal',body:JSON.stringify({done:!cur})});
-    setSyncState('ok'); await loadDay(selDate);
-  } catch(err){ setSyncState('error'); showToast('更新失败'); }
+async function toggleDone(id,cur,e){
+  e.stopPropagation();setSyncState('syncing');
+  try{await sbFetch(`events?id=eq.${id}`,{method:'PATCH',prefer:'return=minimal',body:JSON.stringify({done:!cur})});setSyncState('ok');await loadDay(selDate);}
+  catch(err){setSyncState('error');showToast('更新失败');}
 }
 
-async function deleteEvent(id,e) {
-  e.stopPropagation();
-  if(!confirm('确定删除这条事项？')) return;
+async function deleteEvent(id,e){
+  e.stopPropagation();if(!confirm('确定删除这条事项？'))return;
   setSyncState('syncing');
-  try {
-    await sbFetch(`events?id=eq.${id}`,{method:'DELETE',prefer:'return=minimal'});
-    setSyncState('ok'); showToast('已删除');
-    await loadMonthDots(calYear,calMonth);
-    renderCalendar(); renderWeekTabs(); await loadDay(selDate);
-  } catch(err){ setSyncState('error'); showToast('删除失败'); }
+  try{await sbFetch(`events?id=eq.${id}`,{method:'DELETE',prefer:'return=minimal'});setSyncState('ok');showToast('已删除');await loadMonthDots(calYear,calMonth);renderCalendar();renderWeekTabs();await loadDay(selDate);}
+  catch(err){setSyncState('error');showToast('删除失败');}
 }
 
-// ════════════════════════════════
-//  Toast
-// ════════════════════════════════
 let toastTimer;
-function showToast(msg) {
-  const el=document.getElementById('toast');
-  el.textContent=msg; el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>el.classList.remove('show'),2200);
-}
+function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2200);}
 
-// ════════════════════════════════
-//  键盘快捷键
-// ════════════════════════════════
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape') closeModal();
-  if((e.metaKey||e.ctrlKey)&&e.key==='Enter'&&document.getElementById('modalMask').classList.contains('show')) saveEvent();
+  if(e.key==='Escape')closeModal();
+  if((e.metaKey||e.ctrlKey)&&e.key==='Enter'&&document.getElementById('modalMask').classList.contains('show'))saveEvent();
 });
-
-// 窗口resize时刷新列显示
 window.addEventListener('resize',()=>{
   applyActiveCat();
-  document.getElementById('timelineSection').style.display=isMobile()&&activeCat!=='timeline'?'none':'block';
+  if(!isMobile())document.getElementById('timelineSection').style.display='block';
 });
 
-// ════════════════════════════════
-//  初始化
-// ════════════════════════════════
-async function init() {
-  // 手机默认隐藏时间轴
-  if(isMobile()) document.getElementById('timelineSection').style.display='none';
+// ════════════════════════════════════════
+//  启动：检查 token → 直接进入 or 显示登录
+// ════════════════════════════════════════
+async function initCalendar(){
+  if(isMobile())document.getElementById('timelineSection').style.display='none';
   await loadMonthDots(calYear,calMonth);
-  renderCalendar();
-  renderWeekTabs();
-  await loadDay(selDate);
+  renderCalendar(); renderWeekTabs(); await loadDay(selDate);
 }
 
-init();
+async function boot(){
+  if(currentToken){
+    try{
+      const user=await getSession();
+      if(user&&user.id){ enterApp(user); return; }
+    }catch(_){}
+    localStorage.removeItem('cal_token');
+    currentToken='';
+  }
+  // 没有有效 token → 显示登录
+  document.getElementById('authPage').style.display='flex';
+}
+
+boot();
 </script>
 </body>
 </html>
+
