@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>我的行事历</title>
   <style>
     :root {
@@ -24,55 +24,67 @@
       --border: #EAECF4;
       --radius: 12px;
       --font: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      --header-h: 56px;
+      --bottom-nav-h: 60px;
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
     body { font-family:var(--font); background:var(--bg); color:var(--text-primary); min-height:100vh; }
 
-    /* ── 顶部导航 ── */
+    /* ══════════════════════════════
+       顶部导航
+    ══════════════════════════════ */
     .header {
       background:var(--card-bg); border-bottom:1px solid var(--border);
-      padding:0 32px; height:60px; display:flex; align-items:center;
-      justify-content:space-between; position:sticky; top:0; z-index:100;
+      padding:0 20px; height:var(--header-h);
+      display:flex; align-items:center; justify-content:space-between;
+      position:sticky; top:0; z-index:100;
     }
-    .header-left { display:flex; align-items:center; gap:12px; }
-    .logo-icon { width:32px; height:32px; background:var(--primary); border-radius:8px; display:flex; align-items:center; justify-content:center; }
-    .header-title { font-size:17px; font-weight:600; }
-    .header-right { display:flex; align-items:center; gap:10px; }
+    .header-left { display:flex; align-items:center; gap:10px; }
+    .logo-icon {
+      width:30px; height:30px; background:var(--primary); border-radius:8px;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .header-title { font-size:16px; font-weight:600; }
+    .header-right { display:flex; align-items:center; gap:8px; }
     .btn-add {
-      display:flex; align-items:center; gap:6px; padding:7px 16px;
+      display:flex; align-items:center; gap:5px; padding:7px 14px;
       background:var(--primary); color:#fff; border:none; border-radius:8px;
-      font-size:13px; font-weight:500; cursor:pointer; font-family:var(--font); transition:all 0.2s;
+      font-size:13px; font-weight:500; cursor:pointer; font-family:var(--font);
+      transition:all 0.2s; white-space:nowrap;
     }
-    .btn-add:hover { background:#3A6CE8; transform:translateY(-1px); }
+    .btn-add:hover { background:#3A6CE8; }
+    .btn-add:active { transform:scale(0.97); }
     .sync-status { font-size:12px; color:var(--text-light); display:flex; align-items:center; gap:4px; }
-    .sync-dot { width:6px; height:6px; border-radius:50%; background:#2DBD8E; }
+    .sync-dot { width:6px; height:6px; border-radius:50%; background:#2DBD8E; flex-shrink:0; }
     .sync-dot.syncing { background:#F5832A; animation:pulse 1s infinite; }
     .sync-dot.error { background:#F55353; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-    /* ── 主体布局 ── */
-    .main { display:flex; height:calc(100vh - 60px); }
+    /* ══════════════════════════════
+       PC布局：左侧+右侧
+    ══════════════════════════════ */
+    .main { display:flex; height:calc(100vh - var(--header-h)); }
 
-    /* ── 左侧月历 ── */
     .sidebar {
-      width:260px; min-width:260px; background:var(--card-bg);
-      border-right:1px solid var(--border); padding:20px 16px; overflow-y:auto;
+      width:256px; min-width:256px; background:var(--card-bg);
+      border-right:1px solid var(--border); padding:18px 14px;
+      overflow-y:auto; flex-shrink:0;
     }
-    .month-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; padding:0 4px; }
-    .month-title { font-size:15px; font-weight:600; }
+    .month-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .month-title { font-size:14px; font-weight:600; }
     .arrow-btn {
-      width:28px; height:28px; border:none; background:var(--bg); border-radius:6px;
+      width:26px; height:26px; border:none; background:var(--bg); border-radius:6px;
       cursor:pointer; display:flex; align-items:center; justify-content:center;
       color:var(--text-secondary); transition:all 0.2s;
     }
-    .arrow-btn:hover { background:var(--border); color:var(--text-primary); }
-    .weekdays { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; margin-bottom:6px; }
-    .weekday { font-size:11px; color:var(--text-light); padding:4px 0; font-weight:500; }
-    .days-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+    .arrow-btn:hover { background:var(--border); }
+    .weekdays { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; margin-bottom:4px; }
+    .weekday { font-size:11px; color:var(--text-light); padding:3px 0; font-weight:500; }
+    .days-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:1px; }
     .day-cell {
-      height:34px; display:flex; align-items:center; justify-content:center;
-      font-size:13px; color:var(--text-secondary); border-radius:7px; cursor:pointer;
-      position:relative; transition:all 0.15s; flex-direction:column; gap:1px;
+      height:32px; display:flex; align-items:center; justify-content:center; flex-direction:column;
+      font-size:12px; color:var(--text-secondary); border-radius:6px; cursor:pointer;
+      position:relative; transition:all 0.15s; gap:1px;
     }
     .day-cell:hover { background:var(--bg); color:var(--text-primary); }
     .day-cell.other-month { color:var(--text-light); }
@@ -82,66 +94,63 @@
     .day-cell.today .dot { background:rgba(255,255,255,0.7) !important; }
     .day-cell.selected:not(.today) { background:var(--work-light); color:var(--primary); font-weight:500; }
 
-    /* 图例 */
-    .legend { margin-top:20px; padding-top:16px; border-top:1px solid var(--border); }
-    .legend-title { font-size:11px; color:var(--text-light); font-weight:500; letter-spacing:0.5px; margin-bottom:10px; }
+    .legend { margin-top:16px; padding-top:14px; border-top:1px solid var(--border); }
+    .legend-title { font-size:10px; color:var(--text-light); font-weight:500; letter-spacing:0.5px; margin-bottom:8px; }
     .legend-item {
-      display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:13px;
-      color:var(--text-secondary); cursor:pointer; padding:5px 8px; border-radius:6px; transition:background 0.15s;
+      display:flex; align-items:center; gap:7px; margin-bottom:6px; font-size:12px;
+      color:var(--text-secondary); padding:4px 6px; border-radius:6px; cursor:pointer; transition:background 0.15s;
     }
     .legend-item:hover { background:var(--bg); }
-    .legend-dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
-    .legend-count { margin-left:auto; font-size:11px; background:var(--bg); padding:1px 7px; border-radius:10px; color:var(--text-light); }
+    .legend-dot { width:8px; height:8px; border-radius:3px; flex-shrink:0; }
+    .legend-count { margin-left:auto; font-size:11px; background:var(--bg); padding:1px 6px; border-radius:10px; }
+    .stats-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:12px; }
+    .stat-card { background:var(--bg); border-radius:8px; padding:8px 6px; text-align:center; }
+    .stat-num { font-size:18px; font-weight:700; line-height:1; }
+    .stat-label { font-size:10px; color:var(--text-light); margin-top:2px; }
 
-    /* 统计 */
-    .stats-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:16px; }
-    .stat-card { background:var(--bg); border-radius:8px; padding:10px 8px; text-align:center; }
-    .stat-num { font-size:20px; font-weight:700; line-height:1; }
-    .stat-label { font-size:10px; color:var(--text-light); margin-top:3px; }
+    /* ══════════════════════════════
+       右侧内容区
+    ══════════════════════════════ */
+    .content { flex:1; overflow-y:auto; padding:20px 24px; min-width:0; }
 
-    /* ── 右侧主内容 ── */
-    .content { flex:1; overflow-y:auto; padding:24px 28px; }
-
-    /* 周标签条 */
-    .date-strip { display:flex; align-items:center; gap:8px; margin-bottom:24px; }
-    .date-strip-label { font-size:20px; font-weight:700; margin-right:4px; }
-    .date-strip-sub { font-size:13px; color:var(--text-secondary); margin-right:16px; }
-    .week-tabs { display:flex; gap:6px; }
+    .date-strip { display:flex; align-items:center; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+    .date-strip-label { font-size:18px; font-weight:700; }
+    .date-strip-sub { font-size:12px; color:var(--text-secondary); margin-right:8px; }
+    .week-tabs { display:flex; gap:4px; }
     .week-tab {
-      display:flex; flex-direction:column; align-items:center; padding:6px 10px;
-      border-radius:10px; cursor:pointer; transition:all 0.2s; min-width:44px;
+      display:flex; flex-direction:column; align-items:center; padding:5px 8px;
+      border-radius:8px; cursor:pointer; transition:all 0.2s; min-width:40px;
     }
     .week-tab:hover { background:var(--border); }
     .week-tab.active { background:var(--primary); }
     .week-tab .wd { font-size:10px; color:var(--text-light); font-weight:500; }
     .week-tab.active .wd { color:rgba(255,255,255,0.7); }
-    .week-tab .dd { font-size:15px; font-weight:600; color:var(--text-secondary); line-height:1.2; }
+    .week-tab .dd { font-size:14px; font-weight:600; color:var(--text-secondary); line-height:1.2; }
     .week-tab.active .dd { color:#fff; }
-    .week-tab .dot-row { display:flex; gap:2px; margin-top:3px; height:4px; }
-    .week-tab .dot { width:4px; height:4px; border-radius:50%; }
+    .week-tab .dot-row { display:flex; gap:2px; margin-top:2px; height:4px; }
+    .week-tab .wdot { width:4px; height:4px; border-radius:50%; }
 
     /* 三栏 */
-    .columns { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+    .columns { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
     .column { background:var(--card-bg); border-radius:var(--radius); border:1px solid var(--border); overflow:hidden; }
     .col-header {
-      padding:14px 16px 12px; border-bottom:1px solid var(--border);
+      padding:12px 14px 10px; border-bottom:1px solid var(--border);
       display:flex; align-items:center; justify-content:space-between;
     }
-    .col-header-left { display:flex; align-items:center; gap:8px; }
-    .col-tag { width:8px; height:20px; border-radius:4px; }
-    .col-title { font-size:14px; font-weight:600; }
-    .col-count { font-size:11px; color:var(--text-light); background:var(--bg); padding:2px 8px; border-radius:10px; }
+    .col-header-left { display:flex; align-items:center; gap:7px; }
+    .col-tag { width:6px; height:18px; border-radius:3px; flex-shrink:0; }
+    .col-title { font-size:13px; font-weight:600; }
+    .col-count { font-size:11px; color:var(--text-light); background:var(--bg); padding:1px 7px; border-radius:10px; }
     .col-add {
-      width:26px; height:26px; border:1px solid var(--border); background:transparent;
-      border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+      width:24px; height:24px; border:1px solid var(--border); background:transparent;
+      border-radius:5px; cursor:pointer; display:flex; align-items:center; justify-content:center;
       color:var(--text-light); transition:all 0.2s;
     }
     .col-add:hover { border-color:var(--primary); color:var(--primary); background:var(--work-light); }
-    .col-body { padding:12px; min-height:80px; }
+    .col-body { padding:10px; min-height:60px; }
 
-    /* 事项卡片 */
     .item-card {
-      padding:11px 12px; border-radius:8px; margin-bottom:8px; cursor:pointer;
+      padding:10px 11px; border-radius:8px; margin-bottom:7px; cursor:pointer;
       transition:all 0.2s; border:1px solid transparent; position:relative;
     }
     .item-card:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.06); }
@@ -151,136 +160,242 @@
     .col-life .item-card:hover { border-color:var(--life); }
     .col-special .item-card { background:var(--special-light); border-color:var(--special-border); }
     .col-special .item-card:hover { border-color:var(--special); }
+
     .item-top { display:flex; align-items:flex-start; justify-content:space-between; gap:6px; }
     .item-title { font-size:13px; font-weight:500; line-height:1.4; flex:1; }
     .item-title.done { text-decoration:line-through; color:var(--text-light); }
-    .item-actions { display:flex; gap:4px; flex-shrink:0; }
+    .item-actions { display:flex; gap:3px; flex-shrink:0; }
     .item-checkbox {
       width:16px; height:16px; border-radius:4px; border:1.5px solid var(--text-light);
-      flex-shrink:0; display:flex; align-items:center; justify-content:center;
-      cursor:pointer; transition:all 0.2s; margin-top:1px;
+      display:flex; align-items:center; justify-content:center; cursor:pointer;
+      transition:all 0.2s; margin-top:1px; flex-shrink:0;
     }
     .item-checkbox.checked { background:var(--life); border-color:var(--life); }
     .col-work .item-checkbox.checked { background:var(--work); border-color:var(--work); }
     .col-special .item-checkbox.checked { background:var(--special); border-color:var(--special); }
     .item-del {
-      width:16px; height:16px; border-radius:4px; border:none; background:transparent;
-      cursor:pointer; display:flex; align-items:center; justify-content:center;
-      color:var(--text-light); margin-top:1px; transition:all 0.2s; font-size:12px; line-height:1;
-      opacity:0;
+      width:16px; height:16px; border:none; background:transparent; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; color:var(--text-light);
+      margin-top:1px; transition:all 0.2s; font-size:11px; opacity:0; flex-shrink:0;
     }
     .item-card:hover .item-del { opacity:1; }
-    .item-del:hover { color:#F55353; background:rgba(245,83,83,0.1); border-radius:3px; }
-    .item-meta { display:flex; align-items:center; gap:8px; margin-top:6px; }
-    .item-time { font-size:11px; color:var(--text-light); display:flex; align-items:center; gap:3px; }
-    .item-tag { font-size:10px; padding:1px 7px; border-radius:4px; font-weight:500; }
+    .item-del:hover { color:#F55353; }
+    .item-meta { display:flex; align-items:center; gap:6px; margin-top:5px; flex-wrap:wrap; }
+    .item-time { font-size:11px; color:var(--text-light); display:flex; align-items:center; gap:2px; }
+    .item-tag { font-size:10px; padding:1px 6px; border-radius:4px; font-weight:500; }
     .tag-high { background:rgba(245,83,83,0.1); color:#F55353; }
     .tag-mid { background:rgba(245,131,42,0.1); color:#F5832A; }
     .tag-low { background:rgba(45,189,142,0.1); color:#2DBD8E; }
-    .item-priority { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
-    .priority-high { background:#F55353; }
-    .priority-mid { background:#F5832A; }
-    .priority-low { background:#2DBD8E; }
+    .item-note { font-size:11px; color:var(--text-light); margin-top:4px; line-height:1.4; }
 
-    /* 空状态 */
-    .empty-hint { text-align:center; padding:28px 16px; color:var(--text-light); font-size:12px; }
-
-    /* 添加按钮 */
+    .empty-hint { text-align:center; padding:24px 12px; color:var(--text-light); font-size:12px; }
     .add-item-btn {
-      width:100%; padding:9px; border:1px dashed var(--border); background:transparent;
-      border-radius:8px; color:var(--text-light); font-size:12px; cursor:pointer;
+      width:100%; padding:8px; border:1px dashed var(--border); background:transparent;
+      border-radius:7px; color:var(--text-light); font-size:12px; cursor:pointer;
       display:flex; align-items:center; justify-content:center; gap:4px;
-      margin-top:8px; font-family:var(--font); transition:all 0.2s;
+      margin-top:6px; font-family:var(--font); transition:all 0.2s;
     }
     .add-item-btn:hover { border-color:var(--primary); color:var(--primary); background:var(--work-light); }
 
     /* 时间轴 */
-    .timeline-section { margin-top:24px; }
+    .timeline-section { margin-top:20px; }
     .section-label {
-      font-size:12px; color:var(--text-light); font-weight:500; letter-spacing:0.5px;
-      margin-bottom:14px; display:flex; align-items:center; gap:8px;
+      font-size:11px; color:var(--text-light); font-weight:500; letter-spacing:0.5px;
+      margin-bottom:12px; display:flex; align-items:center; gap:8px;
     }
     .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
     .timeline { display:flex; flex-direction:column; }
-    .timeline-slot { display:flex; align-items:flex-start; gap:12px; min-height:52px; }
-    .time-label { font-size:11px; color:var(--text-light); width:36px; flex-shrink:0; padding-top:4px; text-align:right; }
+    .timeline-slot { display:flex; align-items:flex-start; gap:10px; min-height:48px; }
+    .time-label { font-size:11px; color:var(--text-light); width:34px; flex-shrink:0; padding-top:4px; text-align:right; }
     .timeline-line { display:flex; flex-direction:column; align-items:center; flex-shrink:0; }
-    .timeline-dot { width:8px; height:8px; border-radius:50%; background:var(--border); flex-shrink:0; margin-top:6px; }
+    .timeline-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
     .timeline-dot.work { background:var(--work); }
     .timeline-dot.life { background:var(--life); }
     .timeline-dot.special { background:var(--special); }
-    .timeline-vline { width:1px; flex:1; background:var(--border); min-height:36px; }
-    .timeline-event { flex:1; padding-bottom:16px; }
-    .tl-card { padding:9px 12px; border-radius:8px; font-size:12px; display:inline-flex; align-items:center; gap:8px; }
+    .timeline-vline { width:1px; flex:1; background:var(--border); min-height:32px; }
+    .timeline-event { flex:1; padding-bottom:14px; }
+    .tl-card { padding:8px 11px; border-radius:7px; font-size:12px; display:inline-flex; align-items:center; gap:8px; }
     .tl-card.work { background:var(--work-light); }
     .tl-card.life { background:var(--life-light); }
     .tl-card.special { background:var(--special-light); }
     .tl-card-title { font-weight:500; color:var(--text-primary); }
     .tl-card-time { font-size:11px; color:var(--text-light); }
 
-    /* ── 弹层 Modal ── */
+    /* ══════════════════════════════
+       Modal 弹层
+    ══════════════════════════════ */
     .modal-mask {
-      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35);
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4);
       z-index:200; align-items:center; justify-content:center;
-      backdrop-filter:blur(2px);
+      backdrop-filter:blur(2px); padding:16px;
     }
     .modal-mask.show { display:flex; }
     .modal {
-      background:#fff; border-radius:16px; width:440px; max-width:94vw;
+      background:#fff; border-radius:16px; width:100%; max-width:420px;
       box-shadow:0 24px 60px rgba(0,0,0,0.15); overflow:hidden;
       animation:slideUp 0.2s ease;
     }
     @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
     .modal-header {
-      padding:20px 24px 16px; border-bottom:1px solid var(--border);
+      padding:18px 20px 14px; border-bottom:1px solid var(--border);
       display:flex; align-items:center; justify-content:space-between;
     }
-    .modal-title { font-size:16px; font-weight:600; }
+    .modal-title { font-size:15px; font-weight:600; }
     .modal-close {
       width:28px; height:28px; border:none; background:var(--bg); border-radius:6px;
-      cursor:pointer; font-size:16px; color:var(--text-secondary); display:flex;
-      align-items:center; justify-content:center; transition:all 0.2s;
+      cursor:pointer; font-size:15px; color:var(--text-secondary);
+      display:flex; align-items:center; justify-content:center; transition:all 0.2s;
     }
-    .modal-close:hover { background:var(--border); color:var(--text-primary); }
-    .modal-body { padding:20px 24px; display:flex; flex-direction:column; gap:14px; }
-    .form-row { display:flex; flex-direction:column; gap:6px; }
+    .modal-close:hover { background:var(--border); }
+    .modal-body { padding:18px 20px; display:flex; flex-direction:column; gap:13px; overflow-y:auto; max-height:60vh; }
+    .form-row { display:flex; flex-direction:column; gap:5px; }
     .form-label { font-size:12px; color:var(--text-secondary); font-weight:500; }
     .form-input, .form-select, .form-textarea {
-      padding:10px 14px; border:1.5px solid var(--border); border-radius:8px;
+      padding:10px 12px; border:1.5px solid var(--border); border-radius:8px;
       font-size:14px; font-family:var(--font); color:var(--text-primary);
-      background:#fff; transition:border-color 0.2s; outline:none;
+      background:#fff; transition:border-color 0.2s; outline:none; width:100%;
     }
     .form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--primary); }
-    .form-textarea { resize:vertical; min-height:72px; }
-    .form-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    .modal-footer { padding:16px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px; }
+    .form-textarea { resize:vertical; min-height:68px; }
+    .form-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .modal-footer { padding:14px 20px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:8px; }
     .btn-cancel {
-      padding:8px 20px; border:1.5px solid var(--border); background:#fff;
-      border-radius:8px; font-size:14px; cursor:pointer; font-family:var(--font); color:var(--text-secondary); transition:all 0.2s;
+      padding:8px 18px; border:1.5px solid var(--border); background:#fff;
+      border-radius:8px; font-size:14px; cursor:pointer; font-family:var(--font);
+      color:var(--text-secondary); transition:all 0.2s;
     }
-    .btn-cancel:hover { border-color:var(--text-secondary); color:var(--text-primary); }
+    .btn-cancel:hover { border-color:var(--text-secondary); }
     .btn-save {
-      padding:8px 24px; background:var(--primary); color:#fff; border:none;
-      border-radius:8px; font-size:14px; font-weight:500; cursor:pointer; font-family:var(--font); transition:all 0.2s;
+      padding:8px 22px; background:var(--primary); color:#fff; border:none;
+      border-radius:8px; font-size:14px; font-weight:500; cursor:pointer;
+      font-family:var(--font); transition:all 0.2s;
     }
     .btn-save:hover { background:#3A6CE8; }
     .btn-save:disabled { background:var(--text-light); cursor:not-allowed; }
 
-    /* Toast 通知 */
+    /* Toast */
     .toast {
-      position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(20px);
-      background:#1A1D2E; color:#fff; padding:10px 20px; border-radius:8px;
+      position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(10px);
+      background:#1A1D2E; color:#fff; padding:9px 18px; border-radius:8px;
       font-size:13px; z-index:999; opacity:0; transition:all 0.3s; pointer-events:none;
+      white-space:nowrap;
     }
     .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
-    /* 加载骨架 */
-    .skeleton { background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.2s infinite; border-radius:6px; }
-    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-    .skeleton-line { height:13px; margin-bottom:8px; }
-    .skeleton-line:last-child { width:60%; }
+    /* ══════════════════════════════
+       手机端底部导航 Tab Bar
+    ══════════════════════════════ */
+    .bottom-nav {
+      display:none;
+      position:fixed; bottom:0; left:0; right:0; height:var(--bottom-nav-h);
+      background:var(--card-bg); border-top:1px solid var(--border);
+      z-index:100; padding:0 8px;
+      padding-bottom:env(safe-area-inset-bottom);
+    }
+    .bottom-nav-inner { display:flex; height:100%; align-items:center; justify-content:space-around; }
+    .bnav-item {
+      display:flex; flex-direction:column; align-items:center; gap:3px;
+      flex:1; padding:6px 0; cursor:pointer; color:var(--text-light);
+      transition:color 0.2s; border:none; background:transparent; font-family:var(--font);
+    }
+    .bnav-item.active { color:var(--primary); }
+    .bnav-item svg { width:20px; height:20px; }
+    .bnav-item span { font-size:10px; font-weight:500; }
+    .bnav-fab {
+      width:48px; height:48px; background:var(--primary); border-radius:50%; border:none;
+      display:flex; align-items:center; justify-content:center; cursor:pointer;
+      box-shadow:0 4px 14px rgba(74,124,255,0.45); transition:all 0.2s; flex-shrink:0;
+    }
+    .bnav-fab:active { transform:scale(0.93); }
 
-    ::-webkit-scrollbar { width:5px; }
+    /* ══════════════════════════════
+       手机端月历抽屉（侧滑）
+    ══════════════════════════════ */
+    .drawer-mask {
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35);
+      z-index:150; backdrop-filter:blur(1px);
+    }
+    .drawer-mask.show { display:block; }
+    .drawer {
+      position:fixed; top:0; left:-280px; bottom:0; width:280px;
+      background:var(--card-bg); z-index:151; transition:left 0.28s ease;
+      overflow-y:auto; padding:20px 14px;
+      padding-top:calc(20px + env(safe-area-inset-top));
+    }
+    .drawer.open { left:0; }
+
+    /* ══════════════════════════════
+       手机端分类 Tab（替换三栏）
+    ══════════════════════════════ */
+    .cat-tabs { display:none; gap:0; margin-bottom:14px; background:var(--card-bg); border-radius:10px; padding:4px; border:1px solid var(--border); }
+    .cat-tab {
+      flex:1; padding:8px 0; border:none; background:transparent; border-radius:7px;
+      font-size:13px; font-weight:500; cursor:pointer; font-family:var(--font);
+      color:var(--text-secondary); transition:all 0.2s;
+    }
+    .cat-tab.active { background:var(--primary); color:#fff; }
+
+    /* ══════════════════════════════
+       响应式断点
+    ══════════════════════════════ */
+
+    /* 平板：隐藏侧边栏，内容更宽 */
+    @media (max-width: 900px) {
+      .sidebar { display:none; }
+      .content { padding:16px 16px; }
+      .columns { grid-template-columns:1fr 1fr 1fr; gap:10px; }
+      .col-title { font-size:12px; }
+    }
+
+    /* 手机：底部导航，单列布局 */
+    @media (max-width: 640px) {
+      :root { --header-h: 52px; }
+      .header { padding:0 14px; }
+      .header-title { font-size:15px; }
+      .btn-add span { display:none; }       /* 只显示图标 */
+      .btn-add { padding:7px 10px; }
+      .sync-status span { display:none; }   /* 只显示小点 */
+
+      .main { height:calc(100vh - var(--header-h) - var(--bottom-nav-h)); }
+      .content { padding:12px 12px; padding-bottom:16px; overflow-y:auto; }
+
+      /* 周标签滚动 */
+      .date-strip { flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; }
+      .date-strip::-webkit-scrollbar { display:none; }
+      .week-tabs { flex-wrap:nowrap; }
+      .week-tab { min-width:38px; padding:5px 6px; }
+
+      /* 三栏变单列 + 分类 Tab 切换 */
+      .columns { grid-template-columns:1fr; }
+      .column { display:none; }
+      .column.active-col { display:block; }
+      .cat-tabs { display:flex; }
+
+      /* 底部导航显示 */
+      .bottom-nav { display:block; }
+
+      /* 顶部"新增"按钮隐藏（用FAB代替） */
+      .btn-add-text { display:none; }
+
+      /* 时间轴 */
+      .tl-card { flex-wrap:wrap; }
+
+      /* Modal全屏感 */
+      .modal { border-radius:16px 16px 0 0; position:fixed; bottom:0; left:0; right:0; max-width:100%; margin:0; }
+      .modal-mask { align-items:flex-end; padding:0; }
+      @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+      .modal-body { max-height:55vh; }
+
+      .toast { bottom:calc(var(--bottom-nav-h) + 12px); }
+    }
+
+    /* 超小屏 */
+    @media (max-width: 360px) {
+      .week-tab { min-width:34px; padding:4px 4px; }
+      .week-tab .dd { font-size:13px; }
+    }
+
+    ::-webkit-scrollbar { width:4px; height:4px; }
     ::-webkit-scrollbar-track { background:transparent; }
     ::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
   </style>
@@ -302,10 +417,10 @@
     <symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="20 6 9 17 4 12"/>
     </symbol>
-    <symbol id="ic-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <symbol id="ic-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
       <polyline points="15 18 9 12 15 6"/>
     </symbol>
-    <symbol id="ic-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <symbol id="ic-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
       <polyline points="9 18 15 12 9 6"/>
     </symbol>
     <symbol id="ic-work" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -317,9 +432,12 @@
     <symbol id="ic-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
     </symbol>
-    <symbol id="ic-sync" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
-      <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+    <symbol id="ic-timeline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="12" y1="2" x2="12" y2="22"/><circle cx="12" cy="6" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="18" r="2" fill="currentColor"/>
+      <line x1="12" y1="6" x2="18" y2="6"/><line x1="12" y1="12" x2="18" y2="12"/><line x1="12" y1="18" x2="18" y2="18"/>
+    </symbol>
+    <symbol id="ic-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <circle cx="12" cy="6" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="18" r="1" fill="currentColor"/>
     </symbol>
   </defs>
 </svg>
@@ -328,7 +446,7 @@
 <header class="header">
   <div class="header-left">
     <div class="logo-icon">
-      <svg style="width:18px;height:18px;color:#fff"><use href="#ic-cal"/></svg>
+      <svg style="width:16px;height:16px;color:#fff"><use href="#ic-cal"/></svg>
     </div>
     <span class="header-title">我的行事历</span>
   </div>
@@ -338,22 +456,75 @@
   </div>
   <div class="header-right">
     <button class="btn-add" onclick="openModal()">
-      <svg style="width:14px;height:14px"><use href="#ic-plus"/></svg>
-      新增事项
+      <svg style="width:13px;height:13px"><use href="#ic-plus"/></svg>
+      <span>新增事项</span>
     </button>
   </div>
 </header>
 
+<!-- 手机端月历抽屉遮罩 -->
+<div class="drawer-mask" id="drawerMask" onclick="closeDrawer()"></div>
+
+<!-- 手机端月历抽屉内容 -->
+<div class="drawer" id="drawer">
+  <div class="month-nav">
+    <button class="arrow-btn" onclick="prevMonth()">
+      <svg style="width:13px;height:13px"><use href="#ic-left"/></svg>
+    </button>
+    <span class="month-title" id="drawerMonthTitle"></span>
+    <button class="arrow-btn" onclick="nextMonth()">
+      <svg style="width:13px;height:13px"><use href="#ic-right"/></svg>
+    </button>
+  </div>
+  <div class="weekdays">
+    <div class="weekday">日</div><div class="weekday">一</div><div class="weekday">二</div>
+    <div class="weekday">三</div><div class="weekday">四</div><div class="weekday">五</div><div class="weekday">六</div>
+  </div>
+  <div class="days-grid" id="drawerDaysGrid"></div>
+  <div class="legend" style="margin-top:14px">
+    <div class="legend-title">事项分类</div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--work)"></div>
+      <svg style="width:12px;height:12px;color:var(--work)"><use href="#ic-work"/></svg>
+      工作 <span class="legend-count" id="d-cnt-work">0</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--life)"></div>
+      <svg style="width:12px;height:12px;color:var(--life)"><use href="#ic-home"/></svg>
+      生活 <span class="legend-count" id="d-cnt-life">0</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--special)"></div>
+      <svg style="width:12px;height:12px;color:var(--special)"><use href="#ic-star"/></svg>
+      特殊 <span class="legend-count" id="d-cnt-special">0</span>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num" style="color:var(--work)" id="d-stat-work">0</div>
+      <div class="stat-label">工作</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color:var(--life)" id="d-stat-life">0</div>
+      <div class="stat-label">生活</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color:var(--special)" id="d-stat-special">0</div>
+      <div class="stat-label">标注</div>
+    </div>
+  </div>
+</div>
+
 <div class="main">
-  <!-- 左侧月历 -->
+  <!-- PC左侧月历 -->
   <aside class="sidebar">
     <div class="month-nav">
       <button class="arrow-btn" onclick="prevMonth()">
-        <svg style="width:14px;height:14px"><use href="#ic-left"/></svg>
+        <svg style="width:13px;height:13px"><use href="#ic-left"/></svg>
       </button>
       <span class="month-title" id="monthTitle"></span>
       <button class="arrow-btn" onclick="nextMonth()">
-        <svg style="width:14px;height:14px"><use href="#ic-right"/></svg>
+        <svg style="width:13px;height:13px"><use href="#ic-right"/></svg>
       </button>
     </div>
     <div class="weekdays">
@@ -361,26 +532,24 @@
       <div class="weekday">三</div><div class="weekday">四</div><div class="weekday">五</div><div class="weekday">六</div>
     </div>
     <div class="days-grid" id="daysGrid"></div>
-
     <div class="legend">
       <div class="legend-title">事项分类</div>
       <div class="legend-item">
         <div class="legend-dot" style="background:var(--work)"></div>
-        <svg style="width:13px;height:13px;color:var(--work)"><use href="#ic-work"/></svg>
+        <svg style="width:12px;height:12px;color:var(--work)"><use href="#ic-work"/></svg>
         工作事项 <span class="legend-count" id="cnt-work">0</span>
       </div>
       <div class="legend-item">
         <div class="legend-dot" style="background:var(--life)"></div>
-        <svg style="width:13px;height:13px;color:var(--life)"><use href="#ic-home"/></svg>
+        <svg style="width:12px;height:12px;color:var(--life)"><use href="#ic-home"/></svg>
         生活事项 <span class="legend-count" id="cnt-life">0</span>
       </div>
       <div class="legend-item">
         <div class="legend-dot" style="background:var(--special)"></div>
-        <svg style="width:13px;height:13px;color:var(--special)"><use href="#ic-star"/></svg>
+        <svg style="width:12px;height:12px;color:var(--special)"><use href="#ic-star"/></svg>
         特殊标注 <span class="legend-count" id="cnt-special">0</span>
       </div>
     </div>
-
     <div class="stats-row">
       <div class="stat-card">
         <div class="stat-num" style="color:var(--work)" id="stat-work">0</div>
@@ -399,71 +568,107 @@
 
   <!-- 右侧主内容 -->
   <main class="content">
+    <!-- 周标签条 -->
     <div class="date-strip">
       <span class="date-strip-label" id="stripMonth"></span>
       <span class="date-strip-sub" id="stripSub"></span>
       <div class="week-tabs" id="weekTabs"></div>
     </div>
 
+    <!-- 手机分类 Tab -->
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-tab active" onclick="switchCat('work',this)">工作</button>
+      <button class="cat-tab" onclick="switchCat('life',this)">生活</button>
+      <button class="cat-tab" onclick="switchCat('special',this)">特殊</button>
+      <button class="cat-tab" onclick="switchCat('timeline',this)">时间轴</button>
+    </div>
+
+    <!-- 三栏（PC）/ 单栏（手机） -->
     <div class="columns">
-      <div class="column col-work">
+      <div class="column col-work active-col" id="col-work">
         <div class="col-header">
           <div class="col-header-left">
             <div class="col-tag" style="background:var(--work)"></div>
-            <svg style="width:14px;height:14px;color:var(--work)"><use href="#ic-work"/></svg>
+            <svg style="width:13px;height:13px;color:var(--work)"><use href="#ic-work"/></svg>
             <span class="col-title">工作事项</span>
             <span class="col-count" id="hd-work">0</span>
           </div>
           <button class="col-add" onclick="openModal('work')">
-            <svg style="width:12px;height:12px"><use href="#ic-plus"/></svg>
+            <svg style="width:11px;height:11px"><use href="#ic-plus"/></svg>
           </button>
         </div>
         <div class="col-body" id="list-work"></div>
       </div>
 
-      <div class="column col-life">
+      <div class="column col-life" id="col-life">
         <div class="col-header">
           <div class="col-header-left">
             <div class="col-tag" style="background:var(--life)"></div>
-            <svg style="width:14px;height:14px;color:var(--life)"><use href="#ic-home"/></svg>
+            <svg style="width:13px;height:13px;color:var(--life)"><use href="#ic-home"/></svg>
             <span class="col-title">生活事项</span>
             <span class="col-count" id="hd-life">0</span>
           </div>
           <button class="col-add" onclick="openModal('life')">
-            <svg style="width:12px;height:12px"><use href="#ic-plus"/></svg>
+            <svg style="width:11px;height:11px"><use href="#ic-plus"/></svg>
           </button>
         </div>
         <div class="col-body" id="list-life"></div>
       </div>
 
-      <div class="column col-special">
+      <div class="column col-special" id="col-special">
         <div class="col-header">
           <div class="col-header-left">
             <div class="col-tag" style="background:var(--special)"></div>
-            <svg style="width:14px;height:14px;color:var(--special)"><use href="#ic-star"/></svg>
+            <svg style="width:13px;height:13px;color:var(--special)"><use href="#ic-star"/></svg>
             <span class="col-title">特殊标注</span>
             <span class="col-count" id="hd-special">0</span>
           </div>
           <button class="col-add" onclick="openModal('special')">
-            <svg style="width:12px;height:12px"><use href="#ic-plus"/></svg>
+            <svg style="width:11px;height:11px"><use href="#ic-plus"/></svg>
           </button>
         </div>
         <div class="col-body" id="list-special"></div>
       </div>
     </div>
 
-    <div class="timeline-section">
+    <!-- 时间轴 -->
+    <div class="timeline-section" id="timelineSection">
       <div class="section-label">当日时间轴</div>
       <div class="timeline" id="timeline"></div>
     </div>
   </main>
 </div>
 
-<!-- 新增/编辑 Modal -->
+<!-- 手机底部 Tab Bar -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bnav-item active" id="bnav-cal" onclick="openDrawer()">
+      <svg><use href="#ic-cal"/></svg>
+      <span>日历</span>
+    </button>
+    <button class="bnav-item" id="bnav-today" onclick="goToday()">
+      <svg><use href="#ic-clock"/></svg>
+      <span>今天</span>
+    </button>
+    <button class="bnav-fab" onclick="openModal()">
+      <svg style="width:22px;height:22px;color:#fff"><use href="#ic-plus"/></svg>
+    </button>
+    <button class="bnav-item" id="bnav-work" onclick="switchCatBtn('work')">
+      <svg><use href="#ic-work"/></svg>
+      <span>工作</span>
+    </button>
+    <button class="bnav-item" id="bnav-tl" onclick="switchCatBtn('timeline')">
+      <svg><use href="#ic-timeline"/></svg>
+      <span>时间轴</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Modal 弹层 -->
 <div class="modal-mask" id="modalMask" onclick="handleMaskClick(event)">
-  <div class="modal">
+  <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
-      <span class="modal-title" id="modalTitle">新增事项</span>
+      <span class="modal-title">新增事项</span>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
@@ -515,9 +720,9 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ════════════════════════════════════════
-//  Supabase 配置
-// ════════════════════════════════════════
+// ════════════════════════════════
+//  Supabase
+// ════════════════════════════════
 const SUPABASE_URL = 'https://oownnwrmvlezuacoqkiu.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_E5AJzdBr6TsnoLfS4AMH9w_oy26Ro_O';
 
@@ -532,66 +737,62 @@ async function sbFetch(path, options = {}) {
       ...(options.headers || {})
     }
   });
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(err);
-  }
+  if (!res.ok) throw new Error(await res.text());
   const text = await res.text();
   return text ? JSON.parse(text) : [];
 }
 
-// ════════════════════════════════════════
+// ════════════════════════════════
 //  状态
-// ════════════════════════════════════════
-const today = new Date();
-today.setHours(0,0,0,0);
+// ════════════════════════════════
+const todayDate = new Date();
+todayDate.setHours(0,0,0,0);
 
-let calYear  = today.getFullYear();
-let calMonth = today.getMonth(); // 0-based
-let selDate  = fmt(today);       // YYYY-MM-DD
-let events   = [];               // 当前选中日所有事项
-let monthEvtMap = {};            // 月内日期→分类集合，用于日历小点
+let calYear  = todayDate.getFullYear();
+let calMonth = todayDate.getMonth();
+let selDate  = fmt(todayDate);
+let events   = [];
+let monthEvtMap = {};
+let activeCat = 'work'; // 手机端当前展示的分类
 
-// ════════════════════════════════════════
+// ════════════════════════════════
 //  工具
-// ════════════════════════════════════════
+// ════════════════════════════════
 function fmt(d) {
-  const y = d.getFullYear();
-  const m = String(d.getMonth()+1).padStart(2,'0');
-  const day = String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${day}`;
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 function parseDate(s) {
   const [y,m,d] = s.split('-').map(Number);
-  return new Date(y, m-1, d);
+  return new Date(y,m-1,d);
 }
 function weekNum(d) {
-  const start = new Date(d.getFullYear(), 0, 1);
-  return Math.ceil(((d - start) / 86400000 + start.getDay() + 1) / 7);
+  const s = new Date(d.getFullYear(),0,1);
+  return Math.ceil(((d-s)/86400000 + s.getDay()+1)/7);
 }
 const WD = ['日','一','二','三','四','五','六'];
-const PRIORITY_LABEL = { high:'高优先', mid:'中优先', low:'低优先' };
+const PRI_LABEL = { high:'高优先', mid:'中优先', low:'低优先' };
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function isMobile() { return window.innerWidth <= 640; }
 
-// ════════════════════════════════════════
-//  同步状态 UI
-// ════════════════════════════════════════
-function setSyncState(state) {
+// ════════════════════════════════
+//  同步状态
+// ════════════════════════════════
+function setSyncState(s) {
   const dot = document.getElementById('syncDot');
   const txt = document.getElementById('syncText');
-  dot.className = 'sync-dot' + (state === 'syncing' ? ' syncing' : state === 'error' ? ' error' : '');
-  txt.textContent = state === 'syncing' ? '同步中…' : state === 'error' ? '同步失败' : '已同步';
+  dot.className = 'sync-dot' + (s==='syncing'?' syncing':s==='error'?' error':'');
+  txt.textContent = s==='syncing'?'同步中…':s==='error'?'失败':'已同步';
 }
 
-// ════════════════════════════════════════
+// ════════════════════════════════
 //  数据加载
-// ════════════════════════════════════════
+// ════════════════════════════════
 async function loadDay(dateStr) {
   setSyncState('syncing');
   try {
-    const data = await sbFetch(`events?date=eq.${dateStr}&order=time_start.asc.nullslast,created_at.asc`, {
-      headers: { 'Prefer': '' }
-    });
-    events = data;
+    events = await sbFetch(`events?date=eq.${dateStr}&order=time_start.asc.nullslast,created_at.asc`, { headers:{'Prefer':''} });
     setSyncState('ok');
   } catch(e) {
     setSyncState('error');
@@ -603,170 +804,155 @@ async function loadDay(dateStr) {
 }
 
 async function loadMonthDots(year, month) {
-  // 获取当月所有事项（只取日期+分类）
   const from = `${year}-${String(month+1).padStart(2,'0')}-01`;
-  const lastDay = new Date(year, month+1, 0).getDate();
+  const lastDay = new Date(year,month+1,0).getDate();
   const to = `${year}-${String(month+1).padStart(2,'0')}-${String(lastDay).padStart(2,'0')}`;
   try {
-    const data = await sbFetch(`events?date=gte.${from}&date=lte.${to}&select=date,category`, {
-      headers: { 'Prefer': '' }
-    });
+    const data = await sbFetch(`events?date=gte.${from}&date=lte.${to}&select=date,category`, { headers:{'Prefer':''} });
     monthEvtMap = {};
     data.forEach(e => {
       if (!monthEvtMap[e.date]) monthEvtMap[e.date] = new Set();
       monthEvtMap[e.date].add(e.category);
     });
-  } catch(e) {
-    monthEvtMap = {};
-  }
+  } catch(e) { monthEvtMap = {}; }
 }
 
-// ════════════════════════════════════════
-//  月历渲染
-// ════════════════════════════════════════
-function renderCalendar() {
-  document.getElementById('monthTitle').textContent = `${calYear}年 ${calMonth+1}月`;
-  const grid = document.getElementById('daysGrid');
-  grid.innerHTML = '';
+// ════════════════════════════════
+//  月历渲染（PC + 抽屉共用）
+// ════════════════════════════════
+function buildCalendarGrid(gridEl, titleEl) {
+  titleEl.textContent = `${calYear}年 ${calMonth+1}月`;
+  gridEl.innerHTML = '';
 
-  const firstDay = new Date(calYear, calMonth, 1).getDay();
-  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
-  const prevDays = new Date(calYear, calMonth, 0).getDate();
+  const firstDay = new Date(calYear,calMonth,1).getDay();
+  const daysInMonth = new Date(calYear,calMonth+1,0).getDate();
+  const prevDays = new Date(calYear,calMonth,0).getDate();
 
-  // 上月
-  for (let i = firstDay - 1; i >= 0; i--) {
-    const cell = document.createElement('div');
-    cell.className = 'day-cell other-month';
-    cell.textContent = prevDays - i;
-    grid.appendChild(cell);
+  for (let i=firstDay-1;i>=0;i--) {
+    const c = document.createElement('div');
+    c.className='day-cell other-month';
+    c.textContent=prevDays-i;
+    gridEl.appendChild(c);
   }
-  // 本月
-  for (let d = 1; d <= daysInMonth; d++) {
-    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const cell = document.createElement('div');
-    cell.className = 'day-cell';
+  for (let d=1;d<=daysInMonth;d++) {
+    const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const c=document.createElement('div');
+    c.className='day-cell';
+    if (fmt(new Date(calYear,calMonth,d))===fmt(todayDate)) c.classList.add('today');
+    if (ds===selDate) c.classList.add('selected');
 
-    const dObj = new Date(calYear, calMonth, d);
-    if (fmt(dObj) === fmt(today)) cell.classList.add('today');
-    if (dateStr === selDate) cell.classList.add('selected');
+    const num=document.createElement('span');
+    num.textContent=d;
+    c.appendChild(num);
 
-    // 数字
-    const num = document.createElement('span');
-    num.textContent = d;
-    cell.appendChild(num);
-
-    // 小点
-    const cats = monthEvtMap[dateStr];
-    if (cats && cats.size > 0) {
-      const dotRow = document.createElement('div');
-      dotRow.className = 'dots';
-      const colors = { work:'var(--work)', life:'var(--life)', special:'var(--special)' };
-      cats.forEach(c => {
-        const dot = document.createElement('div');
-        dot.className = 'dot';
-        dot.style.background = cell.classList.contains('today') ? 'rgba(255,255,255,0.7)' : colors[c];
-        dotRow.appendChild(dot);
+    const cats=monthEvtMap[ds];
+    if (cats&&cats.size>0) {
+      const dr=document.createElement('div');
+      dr.className='dots';
+      const colors={work:'var(--work)',life:'var(--life)',special:'var(--special)'};
+      cats.forEach(ct=>{
+        const dot=document.createElement('div');
+        dot.className='dot';
+        dot.style.background=c.classList.contains('today')?'rgba(255,255,255,0.7)':colors[ct];
+        dr.appendChild(dot);
       });
-      cell.appendChild(dotRow);
+      c.appendChild(dr);
     }
-
-    cell.onclick = () => selectDate(dateStr);
-    grid.appendChild(cell);
+    c.onclick=()=>{ selectDate(ds); if(isMobile()) closeDrawer(); };
+    gridEl.appendChild(c);
   }
-  // 下月补齐
-  const total = firstDay + daysInMonth;
-  const remain = total % 7 === 0 ? 0 : 7 - (total % 7);
-  for (let i = 1; i <= remain; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'day-cell other-month';
-    cell.textContent = i;
-    grid.appendChild(cell);
+  const total=firstDay+daysInMonth;
+  const remain=total%7===0?0:7-(total%7);
+  for (let i=1;i<=remain;i++) {
+    const c=document.createElement('div');
+    c.className='day-cell other-month';
+    c.textContent=i;
+    gridEl.appendChild(c);
   }
 }
 
-// ════════════════════════════════════════
+function renderCalendar() {
+  buildCalendarGrid(document.getElementById('daysGrid'), document.getElementById('monthTitle'));
+  buildCalendarGrid(document.getElementById('drawerDaysGrid'), document.getElementById('drawerMonthTitle'));
+}
+
+// ════════════════════════════════
 //  周标签条
-// ════════════════════════════════════════
+// ════════════════════════════════
 function renderWeekTabs() {
-  const sel = parseDate(selDate);
-  const dow = sel.getDay(); // 0=Sun
-  const sunday = new Date(sel);
-  sunday.setDate(sel.getDate() - dow);
+  const sel=parseDate(selDate);
+  const dow=sel.getDay();
+  const sun=new Date(sel); sun.setDate(sel.getDate()-dow);
 
-  const strip = document.getElementById('stripMonth');
-  const sub = document.getElementById('stripSub');
-  strip.textContent = `${sel.getMonth()+1}月`;
-  sub.textContent = `${sel.getFullYear()} · 第${weekNum(sel)}周`;
+  document.getElementById('stripMonth').textContent=`${sel.getMonth()+1}月`;
+  document.getElementById('stripSub').textContent=`${sel.getFullYear()} · 第${weekNum(sel)}周`;
 
-  const tabs = document.getElementById('weekTabs');
-  tabs.innerHTML = '';
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(sunday);
-    d.setDate(sunday.getDate() + i);
-    const ds = fmt(d);
-    const tab = document.createElement('div');
-    tab.className = 'week-tab' + (ds === selDate ? ' active' : '');
-
-    const cats = monthEvtMap[ds];
-    const dotHtml = cats && cats.size > 0
-      ? [...cats].map(c => {
-          const col = tab.classList.contains('active')
-            ? 'rgba(255,255,255,0.7)'
-            : c === 'work' ? 'var(--work)' : c === 'life' ? 'var(--life)' : 'var(--special)';
-          return `<div class="dot" style="background:${col}"></div>`;
-        }).join('')
-      : '';
-
-    tab.innerHTML = `
-      <span class="wd">${WD[i]}</span>
-      <span class="dd">${d.getDate()}</span>
-      <div class="dot-row">${dotHtml}</div>
-    `;
-    tab.onclick = () => selectDate(ds);
+  const tabs=document.getElementById('weekTabs');
+  tabs.innerHTML='';
+  for(let i=0;i<7;i++){
+    const d=new Date(sun); d.setDate(sun.getDate()+i);
+    const ds=fmt(d);
+    const tab=document.createElement('div');
+    tab.className='week-tab'+(ds===selDate?' active':'');
+    const cats=monthEvtMap[ds];
+    let dotsHtml='';
+    if(cats&&cats.size>0){
+      const isActive=ds===selDate;
+      const colors={work:'var(--work)',life:'var(--life)',special:'var(--special)'};
+      [...cats].forEach(c=>{
+        const col=isActive?'rgba(255,255,255,0.7)':colors[c];
+        dotsHtml+=`<div class="wdot" style="background:${col}"></div>`;
+      });
+    }
+    tab.innerHTML=`<span class="wd">${WD[i]}</span><span class="dd">${d.getDate()}</span><div class="dot-row">${dotsHtml}</div>`;
+    tab.onclick=()=>selectDate(ds);
     tabs.appendChild(tab);
   }
 }
 
-// ════════════════════════════════════════
+// ════════════════════════════════
 //  三栏渲染
-// ════════════════════════════════════════
+// ════════════════════════════════
 function renderColumns() {
-  const cats = ['work', 'life', 'special'];
-  cats.forEach(cat => {
-    const items = events.filter(e => e.category === cat);
-    const list = document.getElementById('list-' + cat);
-    document.getElementById('hd-' + cat).textContent = items.length;
-    document.getElementById('cnt-' + cat).textContent = items.length;
-    document.getElementById('stat-' + cat).textContent = items.length;
+  ['work','life','special'].forEach(cat=>{
+    const items=events.filter(e=>e.category===cat);
+    const n=items.length;
+    document.getElementById('hd-'+cat).textContent=n;
+    document.getElementById('cnt-'+cat).textContent=n;
+    document.getElementById('d-cnt-'+cat).textContent=n;
+    document.getElementById('stat-'+cat).textContent=n;
+    document.getElementById('d-stat-'+cat).textContent=n;
 
-    list.innerHTML = '';
-    if (items.length === 0) {
-      list.innerHTML = `<div class="empty-hint">暂无事项</div>`;
+    const list=document.getElementById('list-'+cat);
+    list.innerHTML='';
+    if(items.length===0){
+      list.innerHTML='<div class="empty-hint">暂无事项</div>';
     } else {
-      items.forEach(ev => list.appendChild(makeCard(ev, cat)));
+      items.forEach(ev=>list.appendChild(makeCard(ev,cat)));
     }
-    // 添加按钮
-    const addBtn = document.createElement('button');
-    addBtn.className = 'add-item-btn';
-    addBtn.innerHTML = `<svg style="width:12px;height:12px"><use href="#ic-plus"/></svg> 添加${cat==='work'?'工作':cat==='life'?'生活':'特殊'}事项`;
-    addBtn.onclick = () => openModal(cat);
-    list.appendChild(addBtn);
+    const btn=document.createElement('button');
+    btn.className='add-item-btn';
+    const label=cat==='work'?'工作':cat==='life'?'生活':'特殊';
+    btn.innerHTML=`<svg style="width:11px;height:11px"><use href="#ic-plus"/></svg> 添加${label}事项`;
+    btn.onclick=()=>openModal(cat);
+    list.appendChild(btn);
   });
+
+  // 手机端同步列显示状态
+  applyActiveCat();
 }
 
 function makeCard(ev, cat) {
-  const card = document.createElement('div');
-  card.className = 'item-card';
-  const timeStr = ev.time_start || '全天';
-  const priorityColor = ev.priority === 'high' ? '#F55353' : ev.priority === 'low' ? '#2DBD8E' : '#F5832A';
-
-  card.innerHTML = `
+  const card=document.createElement('div');
+  card.className='item-card';
+  const timeStr=ev.time_start||'全天';
+  card.innerHTML=`
     <div class="item-top">
       <span class="item-title${ev.done?' done':''}">${escHtml(ev.title)}</span>
       <div class="item-actions">
-        <button class="item-del" title="删除" onclick="deleteEvent('${ev.id}', event)">✕</button>
-        <div class="item-checkbox${ev.done?' checked':''}" onclick="toggleDone('${ev.id}', ${ev.done}, event)">
-          ${ev.done ? `<svg style="width:10px;height:10px;color:#fff"><use href="#ic-check"/></svg>` : ''}
+        <button class="item-del" onclick="deleteEvent('${ev.id}',event)">✕</button>
+        <div class="item-checkbox${ev.done?' checked':''}" onclick="toggleDone('${ev.id}',${ev.done},event)">
+          ${ev.done?`<svg style="width:10px;height:10px;color:#fff"><use href="#ic-check"/></svg>`:''}
         </div>
       </div>
     </div>
@@ -775,44 +961,38 @@ function makeCard(ev, cat) {
         <svg style="width:11px;height:11px"><use href="#ic-clock"/></svg>
         ${escHtml(timeStr)}
       </span>
-      <span class="item-tag tag-${ev.priority}">${PRIORITY_LABEL[ev.priority]||''}</span>
-      <div class="item-priority priority-${ev.priority}" title="${PRIORITY_LABEL[ev.priority]||''}"></div>
+      <span class="item-tag tag-${ev.priority}">${PRI_LABEL[ev.priority]||''}</span>
     </div>
-    ${ev.note ? `<div style="font-size:11px;color:var(--text-light);margin-top:5px">${escHtml(ev.note)}</div>` : ''}
+    ${ev.note?`<div class="item-note">${escHtml(ev.note)}</div>`:''}
   `;
   return card;
 }
 
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ════════════════════════════════════════
-//  时间轴渲染
-// ════════════════════════════════════════
+// ════════════════════════════════
+//  时间轴
+// ════════════════════════════════
 function renderTimeline() {
-  const tl = document.getElementById('timeline');
-  const timed = events.filter(e => e.time_start).sort((a,b) => a.time_start.localeCompare(b.time_start));
-  if (timed.length === 0) {
-    tl.innerHTML = `<div class="empty-hint" style="padding:20px 0">当天暂无定时事项</div>`;
+  const tl=document.getElementById('timeline');
+  const timed=events.filter(e=>e.time_start).sort((a,b)=>a.time_start.localeCompare(b.time_start));
+  if(timed.length===0){
+    tl.innerHTML='<div class="empty-hint">当天暂无定时事项</div>';
     return;
   }
-  tl.innerHTML = '';
-  timed.forEach((ev, idx) => {
-    const slot = document.createElement('div');
-    slot.className = 'timeline-slot';
-    const isLast = idx === timed.length - 1;
-    const statusTxt = ev.done ? '已完成' : '待处理';
-    slot.innerHTML = `
+  tl.innerHTML='';
+  timed.forEach((ev,idx)=>{
+    const slot=document.createElement('div');
+    slot.className='timeline-slot';
+    const isLast=idx===timed.length-1;
+    slot.innerHTML=`
       <div class="time-label">${ev.time_start}</div>
       <div class="timeline-line">
         <div class="timeline-dot ${ev.category}"></div>
-        ${isLast ? '' : '<div class="timeline-vline"></div>'}
+        ${isLast?'':'<div class="timeline-vline"></div>'}
       </div>
       <div class="timeline-event">
         <div class="tl-card ${ev.category}">
           <div class="tl-card-title">${escHtml(ev.title)}</div>
-          <div class="tl-card-time">${statusTxt}</div>
+          <div class="tl-card-time">${ev.done?'已完成':'待处理'}</div>
         </div>
       </div>
     `;
@@ -820,16 +1000,47 @@ function renderTimeline() {
   });
 }
 
-// ════════════════════════════════════════
-//  日期选择
-// ════════════════════════════════════════
+// ════════════════════════════════
+//  手机端分类切换
+// ════════════════════════════════
+function switchCat(cat, btn) {
+  activeCat=cat;
+  // 更新 Tab 样式
+  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  applyActiveCat();
+}
+
+function switchCatBtn(cat) {
+  activeCat=cat;
+  document.querySelectorAll('.cat-tab').forEach((b,i)=>{
+    const cats=['work','life','special','timeline'];
+    b.classList.toggle('active', cats[i]===cat);
+  });
+  applyActiveCat();
+}
+
+function applyActiveCat() {
+  if(!isMobile()) return; // PC不处理
+  ['work','life','special'].forEach(c=>{
+    const col=document.getElementById('col-'+c);
+    col.classList.toggle('active-col', c===activeCat);
+  });
+  const ts=document.getElementById('timelineSection');
+  ts.style.display=activeCat==='timeline'?'block':'none';
+  // PC端时间轴始终显示
+  if(!isMobile()) ts.style.display='block';
+}
+
+// ════════════════════════════════
+//  日期选择 & 月份导航
+// ════════════════════════════════
 async function selectDate(dateStr) {
-  selDate = dateStr;
-  const d = parseDate(dateStr);
-  if (d.getFullYear() !== calYear || d.getMonth() !== calMonth) {
-    calYear = d.getFullYear();
-    calMonth = d.getMonth();
-    await loadMonthDots(calYear, calMonth);
+  selDate=dateStr;
+  const d=parseDate(dateStr);
+  if(d.getFullYear()!==calYear||d.getMonth()!==calMonth){
+    calYear=d.getFullYear(); calMonth=d.getMonth();
+    await loadMonthDots(calYear,calMonth);
   }
   renderCalendar();
   renderWeekTabs();
@@ -837,150 +1048,133 @@ async function selectDate(dateStr) {
 }
 
 async function prevMonth() {
-  calMonth--;
-  if (calMonth < 0) { calMonth = 11; calYear--; }
-  await loadMonthDots(calYear, calMonth);
-  renderCalendar();
+  calMonth--; if(calMonth<0){calMonth=11;calYear--;}
+  await loadMonthDots(calYear,calMonth);
+  renderCalendar(); renderWeekTabs();
 }
 
 async function nextMonth() {
-  calMonth++;
-  if (calMonth > 11) { calMonth = 0; calYear++; }
-  await loadMonthDots(calYear, calMonth);
-  renderCalendar();
+  calMonth++; if(calMonth>11){calMonth=0;calYear++;}
+  await loadMonthDots(calYear,calMonth);
+  renderCalendar(); renderWeekTabs();
 }
 
-// ════════════════════════════════════════
+function goToday() { selectDate(fmt(todayDate)); }
+
+// ════════════════════════════════
+//  抽屉（手机月历）
+// ════════════════════════════════
+function openDrawer() {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawerMask').classList.add('show');
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerMask').classList.remove('show');
+}
+
+// ════════════════════════════════
 //  Modal
-// ════════════════════════════════════════
+// ════════════════════════════════
 function openModal(defaultCat) {
-  document.getElementById('modalTitle').textContent = '新增事项';
-  document.getElementById('fTitle').value = '';
-  document.getElementById('fCategory').value = defaultCat || 'work';
-  document.getElementById('fPriority').value = 'mid';
-  document.getElementById('fDate').value = selDate;
-  document.getElementById('fTime').value = '';
-  document.getElementById('fNote').value = '';
-  document.getElementById('btnSave').disabled = false;
+  document.getElementById('fTitle').value='';
+  document.getElementById('fCategory').value=defaultCat||activeCat||'work';
+  document.getElementById('fPriority').value='mid';
+  document.getElementById('fDate').value=selDate;
+  document.getElementById('fTime').value='';
+  document.getElementById('fNote').value='';
+  document.getElementById('btnSave').disabled=false;
+  document.getElementById('btnSave').textContent='保存';
   document.getElementById('modalMask').classList.add('show');
-  setTimeout(() => document.getElementById('fTitle').focus(), 100);
+  setTimeout(()=>document.getElementById('fTitle').focus(),150);
 }
+function closeModal() { document.getElementById('modalMask').classList.remove('show'); }
+function handleMaskClick(e) { if(e.target===document.getElementById('modalMask')) closeModal(); }
 
-function closeModal() {
-  document.getElementById('modalMask').classList.remove('show');
-}
-
-function handleMaskClick(e) {
-  if (e.target === document.getElementById('modalMask')) closeModal();
-}
-
-// ════════════════════════════════════════
-//  保存事项
-// ════════════════════════════════════════
+// ════════════════════════════════
+//  保存
+// ════════════════════════════════
 async function saveEvent() {
-  const title = document.getElementById('fTitle').value.trim();
-  if (!title) { showToast('请填写事项标题'); document.getElementById('fTitle').focus(); return; }
-
-  const btn = document.getElementById('btnSave');
-  btn.disabled = true;
-  btn.textContent = '保存中…';
-  setSyncState('syncing');
-
-  const payload = {
+  const title=document.getElementById('fTitle').value.trim();
+  if(!title){ showToast('请填写事项标题'); document.getElementById('fTitle').focus(); return; }
+  const btn=document.getElementById('btnSave');
+  btn.disabled=true; btn.textContent='保存中…'; setSyncState('syncing');
+  const payload={
     title,
-    category: document.getElementById('fCategory').value,
-    priority: document.getElementById('fPriority').value,
-    date: document.getElementById('fDate').value,
-    time_start: document.getElementById('fTime').value || null,
-    note: document.getElementById('fNote').value.trim() || null,
-    done: false
+    category:document.getElementById('fCategory').value,
+    priority:document.getElementById('fPriority').value,
+    date:document.getElementById('fDate').value,
+    time_start:document.getElementById('fTime').value||null,
+    note:document.getElementById('fNote').value.trim()||null,
+    done:false
   };
-
   try {
-    await sbFetch('events', { method: 'POST', body: JSON.stringify(payload) });
-    setSyncState('ok');
-    closeModal();
-    showToast('事项已保存 ✓');
-    await loadMonthDots(calYear, calMonth);
-    renderCalendar();
-    renderWeekTabs();
-    if (payload.date === selDate) await loadDay(selDate);
+    await sbFetch('events',{method:'POST',body:JSON.stringify(payload)});
+    setSyncState('ok'); closeModal(); showToast('已保存 ✓');
+    await loadMonthDots(calYear,calMonth);
+    renderCalendar(); renderWeekTabs();
+    if(payload.date===selDate) await loadDay(selDate);
   } catch(e) {
-    setSyncState('error');
-    showToast('保存失败：' + e.message);
-    btn.disabled = false;
-    btn.textContent = '保存';
+    setSyncState('error'); showToast('保存失败：'+e.message);
+    btn.disabled=false; btn.textContent='保存';
   }
 }
 
-// ════════════════════════════════════════
-//  勾选完成
-// ════════════════════════════════════════
-async function toggleDone(id, currentDone, e) {
+// ════════════════════════════════
+//  勾选 & 删除
+// ════════════════════════════════
+async function toggleDone(id,cur,e) {
+  e.stopPropagation(); setSyncState('syncing');
+  try {
+    await sbFetch(`events?id=eq.${id}`,{method:'PATCH',prefer:'return=minimal',body:JSON.stringify({done:!cur})});
+    setSyncState('ok'); await loadDay(selDate);
+  } catch(err){ setSyncState('error'); showToast('更新失败'); }
+}
+
+async function deleteEvent(id,e) {
   e.stopPropagation();
+  if(!confirm('确定删除这条事项？')) return;
   setSyncState('syncing');
   try {
-    await sbFetch(`events?id=eq.${id}`, {
-      method: 'PATCH',
-      prefer: 'return=minimal',
-      body: JSON.stringify({ done: !currentDone })
-    });
-    setSyncState('ok');
-    await loadDay(selDate);
-  } catch(err) {
-    setSyncState('error');
-    showToast('更新失败');
-  }
+    await sbFetch(`events?id=eq.${id}`,{method:'DELETE',prefer:'return=minimal'});
+    setSyncState('ok'); showToast('已删除');
+    await loadMonthDots(calYear,calMonth);
+    renderCalendar(); renderWeekTabs(); await loadDay(selDate);
+  } catch(err){ setSyncState('error'); showToast('删除失败'); }
 }
 
-// ════════════════════════════════════════
-//  删除事项
-// ════════════════════════════════════════
-async function deleteEvent(id, e) {
-  e.stopPropagation();
-  if (!confirm('确定删除这条事项？')) return;
-  setSyncState('syncing');
-  try {
-    await sbFetch(`events?id=eq.${id}`, { method: 'DELETE', prefer: 'return=minimal' });
-    setSyncState('ok');
-    showToast('已删除');
-    await loadMonthDots(calYear, calMonth);
-    renderCalendar();
-    renderWeekTabs();
-    await loadDay(selDate);
-  } catch(err) {
-    setSyncState('error');
-    showToast('删除失败');
-  }
-}
-
-// ════════════════════════════════════════
+// ════════════════════════════════
 //  Toast
-// ════════════════════════════════════════
+// ════════════════════════════════
 let toastTimer;
 function showToast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),2200);
 }
 
-// ════════════════════════════════════════
+// ════════════════════════════════
 //  键盘快捷键
-// ════════════════════════════════════════
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
-  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-    if (document.getElementById('modalMask').classList.contains('show')) saveEvent();
-  }
+// ════════════════════════════════
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeModal();
+  if((e.metaKey||e.ctrlKey)&&e.key==='Enter'&&document.getElementById('modalMask').classList.contains('show')) saveEvent();
 });
 
-// ════════════════════════════════════════
+// 窗口resize时刷新列显示
+window.addEventListener('resize',()=>{
+  applyActiveCat();
+  document.getElementById('timelineSection').style.display=isMobile()&&activeCat!=='timeline'?'none':'block';
+});
+
+// ════════════════════════════════
 //  初始化
-// ════════════════════════════════════════
+// ════════════════════════════════
 async function init() {
-  await loadMonthDots(calYear, calMonth);
+  // 手机默认隐藏时间轴
+  if(isMobile()) document.getElementById('timelineSection').style.display='none';
+  await loadMonthDots(calYear,calMonth);
   renderCalendar();
   renderWeekTabs();
   await loadDay(selDate);
